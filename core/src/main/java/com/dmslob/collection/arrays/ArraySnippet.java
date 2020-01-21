@@ -328,6 +328,10 @@ public class ArraySnippet {
         res = insertionSort(a);
         System.out.println(Arrays.toString(res));
 
+        int[] arrayForQuickSort = {9, 8, 13, 10, 5, 34};
+        quickSort(arrayForQuickSort, 0, arrayForQuickSort.length - 1);
+        System.out.println("quickSort: " + Arrays.toString(arrayForQuickSort));
+
         // Testing Binary Search
         int[] sortedArray = new int[]{21, 41, 31, 12, 623, 543, 731, 1898};
         Arrays.sort(sortedArray);
