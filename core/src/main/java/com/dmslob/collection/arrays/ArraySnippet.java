@@ -53,18 +53,18 @@ public class ArraySnippet {
         return result;
     }
 
-    public static int[] bubbleSort(int[] a) {
-        int size = a.length - 1;
-        for (int out = size; out > 1; out--) {
-            for (int in = 0; in < out; in++) {
-                if (a[in] > a[in + 1]) {
-                    int temp = a[in];
-                    a[in] = a[in + 1];
-                    a[in + 1] = temp;
+    static int[] bubbleSort(int[] arr) {
+        int n = arr.length - 1;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
                 }
             }
         }
-        return a;
+        return arr;
     }
 
     public static int[] selectionSort(int[] a) {
@@ -132,37 +132,37 @@ public class ArraySnippet {
         }
     }
 
-    public static int binarySearch(int arr[], int elementToSearch) {
-        int firstIndex = 0;
-        int lastIndex = arr.length - 1;
+    public static int binarySearch(int arr[], int key) {
+        int left = 0;
+        int right = arr.length - 1;
 
-        while (firstIndex <= lastIndex) {
-            int middleIndex = (firstIndex + lastIndex) / 2;
-            if (arr[middleIndex] == elementToSearch) {
-                return middleIndex;
-            } else if (arr[middleIndex] < elementToSearch) {
-                firstIndex = middleIndex + 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (arr[mid] == key) {
+                return mid;
+            } else if (arr[mid] < key) {
+                left = mid + 1;
 
-            } else if (arr[middleIndex] > elementToSearch) {
-                lastIndex = middleIndex - 1;
+            } else if (arr[mid] > key) {
+                right = mid - 1;
             }
         }
         return -1;
     }
 
-    public static int recursiveBinarySearch(int arr[], int firstElement, int lastElement, int elementToSearch) {
-        if (lastElement >= firstElement) {
-            int mid = firstElement + (lastElement - firstElement) / 2;
+    public static int recursiveBinarySearch(int arr[], int left, int right, int key) {
+        if (right >= left) {
+            int mid = left + (right - left) / 2;
 
-            if (arr[mid] == elementToSearch) {
+            if (arr[mid] == key) {
                 return mid;
             }
 
-            if (arr[mid] > elementToSearch) {
-                return recursiveBinarySearch(arr, firstElement, mid - 1, elementToSearch);
+            if (arr[mid] > key) {
+                return recursiveBinarySearch(arr, left, mid - 1, key);
             }
 
-            return recursiveBinarySearch(arr, mid + 1, lastElement, elementToSearch);
+            return recursiveBinarySearch(arr, mid + 1, right, key);
         }
         return -1;
     }
