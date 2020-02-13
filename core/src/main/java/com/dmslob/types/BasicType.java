@@ -2,18 +2,26 @@ package com.dmslob.types;
 
 public class BasicType {
 
-    public static void main(String[] args) {
-        System.out.println(new BasicType().countBits(5));
-        System.out.println(new BasicType().power(2, 3));
-        System.out.println(new BasicType().reverse(4567));
-        System.out.println(new BasicType().isPalindromeNumber(656));
+    void values() {
+        int octal = 017;
+        System.out.println(octal);
 
-        int x = 25;
-        // y will equal 9 since the expression x == 10 evaluates to false
-        boolean f = (x == 10);
-        System.out.println(f);
-        int y = (x == 10) ? 5 : 9;
-        System.out.println(y);
+        int hexadecimal = 0xFF;
+        System.out.println(hexadecimal);
+
+        int binary = 0b10;
+        System.out.println(binary);
+    }
+
+    public static void main(String[] args) {
+        BasicType basicTypeMain = new BasicType();
+        basicTypeMain.values();
+
+        System.out.println(basicTypeMain.countBits(5));
+        System.out.println(basicTypeMain.power(2, 3));
+        System.out.println(basicTypeMain.reverse(4567));
+        System.out.println(basicTypeMain.isPalindromeNumber(656));
+
     }
 
     long reverse(int x) {

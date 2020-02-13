@@ -7,22 +7,20 @@ public class CallableDemo {
 
     public static void main(String[] args) throws ExecutionException {
 
-        ExecutorService exec = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newCachedThreadPool();
         ArrayList<Future<String>> results = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            results.add(exec.submit(new TaskWithResult(i)));
+            results.add(executorService.submit(new TaskWithResult(i)));
         }
 
         for (Future<String> fs : results) {
             try {
                 System.out.println(fs.get());
-            } catch (InterruptedException e) {
-                System.out.println(e);
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 System.out.println(e);
             } finally {
-                exec.shutdown();
+                executorService.shutdown();
             }
         }
     }

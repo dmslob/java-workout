@@ -16,6 +16,13 @@ public class ArrayDeclarations {
         return new int[0][];
     }
 
+    void arraysComparison() {
+        int[] a = {1, 2, 3};
+        int[] b = {1, 2, 3};
+        boolean isEquals = Arrays.equals(a, b);
+        System.out.println(isEquals);
+    }
+
     public static void main(String[] args) {
         ArrayDeclarations arrayDeclarations = new ArrayDeclarations();
 

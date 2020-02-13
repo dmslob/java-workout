@@ -1,9 +1,17 @@
 package com.dmslob.cas;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class CasExample {
 
     public static void main(String[] args) {
-
+        MyInteger myInteger = new MyInteger(1);
+        //int i = myInteger.get();
+        System.out.println(myInteger.get());
+        myInteger.incrementAndGet();
+        System.out.println(myInteger.get());
+        myInteger.incrementAndGet();
+        System.out.println(myInteger.get());
     }
 }
 
