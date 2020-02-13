@@ -18,16 +18,12 @@ public class ArraySnippet {
         return result;
     }
 
-    public static void reverseArray() {
-        int[] array = {1, 2, 3};
-
+    public static void reverse(int[] array) {
         for (int i = 0; i < array.length / 2; i++) {
             int temp = array[i];
             array[i] = array[array.length - i - 1];
             array[array.length - i - 1] = temp;
         }
-
-        System.out.println(Arrays.toString(array));
     }
 
     /**
@@ -54,9 +50,8 @@ public class ArraySnippet {
     }
 
     static int[] bubbleSort(int[] arr) {
-        int n = arr.length - 1;
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - i - 1; j++) {
                 if (arr[j] > arr[j + 1]) {
                     int temp = arr[j];
                     arr[j] = arr[j + 1];
@@ -132,18 +127,18 @@ public class ArraySnippet {
         }
     }
 
-    public static int binarySearch(int arr[], int key) {
+    public static int binarySearch(int integers[], int key) {
         int left = 0;
-        int right = arr.length - 1;
+        int right = integers.length - 1;
 
         while (left <= right) {
-            int mid = (left + right) / 2;
-            if (arr[mid] == key) {
+            int mid = left + (right - left) / 2;
+            if (integers[mid] == key) {
                 return mid;
-            } else if (arr[mid] < key) {
+            } else if (integers[mid] < key) {
                 left = mid + 1;
 
-            } else if (arr[mid] > key) {
+            } else if (integers[mid] > key) {
                 right = mid - 1;
             }
         }
@@ -263,17 +258,22 @@ public class ArraySnippet {
         while (integers[Math.min(jumpStep, arrayLength) - 1] < elementToSearch) {
             previousStep = jumpStep;
             jumpStep += (int) (Math.sqrt(arrayLength));
-            if (previousStep >= arrayLength)
+            if (previousStep >= arrayLength) {
                 return -1;
-        }
-        while (integers[previousStep] < elementToSearch) {
-            previousStep++;
-            if (previousStep == Math.min(jumpStep, arrayLength))
-                return -1;
+            }
         }
 
-        if (integers[previousStep] == elementToSearch)
+        while (integers[previousStep] < elementToSearch) {
+            previousStep++;
+            if (previousStep == Math.min(jumpStep, arrayLength)) {
+                return -1;
+            }
+        }
+
+        if (integers[previousStep] == elementToSearch) {
             return previousStep;
+        }
+
         return -1;
     }
 
@@ -320,7 +320,7 @@ public class ArraySnippet {
         int[] a = {9, 8, 13, 5, 34};
 
         int[] res = bubbleSort(a);
-        System.out.println(Arrays.toString(res));
+        System.out.println("bubbleSort result: " + Arrays.toString(res));
 
         res = selectionSort(a);
         System.out.println(Arrays.toString(res));
