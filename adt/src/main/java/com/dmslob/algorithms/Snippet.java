@@ -8,12 +8,15 @@ public class Snippet {
 
     public static void main(String[] args) {
         String str = "abcd";
-        System.out.println(reverseString(str));
+        System.out.println("reverseString: " + reverseString(str));
 
         int number = 1234;
-        System.out.println(reverseInteger(number));
+        System.out.println("reverseInteger: " + reverseInteger(number));
 
-        System.out.println(factorial(2));
+        int n = 10;
+        System.out.println("factorial of " + n + " is " + factorial(n));
+        System.out.println(("rfibonacci of " + n + " is ") + fibonacci(n));
+
         System.out.println(max(2, 3, 4));
 
         for (int i = 0; i < 20; i++) {
@@ -94,23 +97,14 @@ public class Snippet {
      * @param n
      * @return fibonacci number for given n
      */
-    public static long rfibonacci(long n) {
-        if (n <= 1) return n;
-        else return rfibonacci(n - 1) + rfibonacci(n - 2);
-    }
-
-    public static long fibonacci(long n) {
-        if (n <= 1) return n;
-        long x = 0;
-        long y = 1;
-        long sum = 2;
-
-        for (int i = 2; i < n; i++) {
-            sum = x + y;
-            x = y;
-            y = sum;
+    public static int fibonacci(int n) {
+        if (n == 0) {
+            return 0;
         }
-        return sum;
+        if (n == 1 || n == 2) {
+            return 1;
+        }
+        return fibonacci(n - 2) + fibonacci(n - 1);
     }
 
     /**
