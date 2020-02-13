@@ -17,24 +17,32 @@ public class Demo {
         // demo.completableFutureGetResult();
         // demo.testAsync();
         // demo.calculateBMI();
-        // demo.testJoin();
+        demo.testJoin();
         // demo.testAnyOf();
         // demo.testExceptionally();
-        demo.testHandle();
+        // demo.testHandle();
     }
 
     public void testHandle() throws ExecutionException, InterruptedException {
-        Integer age = -1;
+        Integer age = 1;
 
         CompletableFuture<String> maturityFuture = CompletableFuture.supplyAsync(() -> {
             if (age < 0) {
                 throw new IllegalArgumentException("Age can not be negative");
             }
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             if (age > 18) {
                 return "Adult";
             } else {
                 return "Child";
             }
+
         }).handle((res, ex) -> {
             if (ex != null) {
                 System.out.println("Oops! We have an exception - " + ex.getMessage());
@@ -44,6 +52,7 @@ public class Demo {
         });
 
         System.out.println("Maturity : " + maturityFuture.get());
+        System.out.println("After get()");
     }
 
     public void testExceptionally() throws ExecutionException, InterruptedException {
@@ -102,7 +111,8 @@ public class Demo {
     }
 
     public void testJoin() throws ExecutionException, InterruptedException {
-        List<String> webPageLinks = Arrays.asList("https://www.callicoder.com", "https://jaxenter.com", "https://able.bio");// A list of web page links
+        List<String> webPageLinks =
+                Arrays.asList("https://www.callicoder.com", "https://jaxenter.com", "https://able.bio");
 
         // Download contents of all the web pages asynchronously
         List<CompletableFuture<String>> pageContentFutures = webPageLinks.stream()
@@ -142,10 +152,9 @@ public class Demo {
     }
 
     public void calculateBMI() throws ExecutionException, InterruptedException {
-        //LOGGER.info("Retrieving weight.");
         CompletableFuture<Double> weightInKgFuture = CompletableFuture.supplyAsync(() -> {
             try {
-                //LOGGER.info(Thread.currentThread().getName());
+                System.out.println("weightInKgFuture: " + Thread.currentThread().getName());
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 throw new IllegalStateException(e);
@@ -153,10 +162,9 @@ public class Demo {
             return 65.0;
         });
 
-        //LOGGER.info("Retrieving height.");
         CompletableFuture<Double> heightInCmFuture = CompletableFuture.supplyAsync(() -> {
             try {
-                //LOGGER.info(Thread.currentThread().getName());
+                System.out.println("heightInCmFuture: " + Thread.currentThread().getName());
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 throw new IllegalStateException(e);
@@ -164,26 +172,28 @@ public class Demo {
             return 172.8;
         });
 
-        //LOGGER.info("Calculating BMI (Body Mass Index)...");
         CompletableFuture<Double> combinedFuture = weightInKgFuture
                 .thenCombine(heightInCmFuture, (weightInKg, heightInCm) -> {
+                    System.out.println("thenCombine: " + Thread.currentThread().getName());
                     Double heightInMeter = heightInCm / 100;
                     return weightInKg / (heightInMeter * heightInMeter);
                 });
-
-        //LOGGER.info("Your BMI is - " + combinedFuture.get());
+        System.out.println("Your BMI is - " + combinedFuture.get());
     }
 
     public void testAsync() throws ExecutionException, InterruptedException {
         CompletableFuture<CompletableFuture<Double>> result = getUsersDetail(1)
-                .thenApply(user -> getCreditRating(user));
+                .thenApply(user -> {
+                    System.out.println(user.getUserName());
+                    return getCreditRating(user);
+                });
 
         result.get();
     }
 
     public CompletableFuture<User> getUsersDetail(long userId) {
         return CompletableFuture.supplyAsync(() -> {
-            //LOGGER.info("Call remote service to get User with ID = " + userId);
+            System.out.println("Call remote service to get User with ID = " + userId);
             return getUser(userId);
         });
     }
@@ -214,23 +224,28 @@ public class Demo {
             } catch (InterruptedException e) {
                 throw new IllegalStateException(e);
             }
+            System.out.println("supplyAsync: " + Thread.currentThread().getName());
             return "Result of the asynchronous computation";
         }).thenApply(res -> {
             /*
               Executed in the same thread where the supplyAsync() task is executed
               or in the main thread If the supplyAsync() task completes immediately (Remove sleep() call to verify)
             */
+            System.out.println("supplyApply: " + Thread.currentThread().getName());
             return "[ " + res;
         }).thenApplyAsync(res -> {
             // Executed in a different thread from ForkJoinPool.commonPool()
+            System.out.println("thenApplyAsync: " + Thread.currentThread().getName());
             return res + " ]";
         });
 
         future.thenAccept(res -> {
+            System.out.println("future.thenAccept: " + Thread.currentThread().getName());
             System.out.println("Result " + res);
         });
 
         future.thenRun(() -> {
+            System.out.println("future.thenRun: " + Thread.currentThread().getName());
             System.out.println("No access to result");
         });
 
