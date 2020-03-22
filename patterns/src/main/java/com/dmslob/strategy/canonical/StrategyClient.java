@@ -9,6 +9,7 @@ public class StrategyClient {
     }
 
     public static void main(String[] args) {
+
         Position position = new Position(3, 1000);
         new StrategyClient(new TopTrafficCalculator()).process(position);
         new StrategyClient(new PageTrafficCalculator()).process(position);
