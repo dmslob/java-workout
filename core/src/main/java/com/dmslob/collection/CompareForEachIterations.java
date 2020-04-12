@@ -1,5 +1,6 @@
 package com.dmslob.collection;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +16,7 @@ public class CompareForEachIterations {
             System.out.println(s);
             if (s != null && s.equals("A")) {
                 //listOfLetters.add("D"); //java.util.ConcurrentModificationException
-                listOfLetters.remove("D"); //java.util.ConcurrentModificationException
+                //listOfLetters.remove("D"); //java.util.ConcurrentModificationException
                 //listOfLetters.set(3, "G");
             }
         };
@@ -55,7 +56,7 @@ public class CompareForEachIterations {
 
     public static void main(String[] args) {
         CompareForEachIterations forEachIterations = new CompareForEachIterations();
-        //forEachIterations.forEach();
-        forEachIterations.streamForEach();
+        forEachIterations.forEach();
+        //forEachIterations.streamForEach();
     }
 }

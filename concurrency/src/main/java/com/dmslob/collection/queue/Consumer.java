@@ -1,4 +1,4 @@
-package com.dmslob.collections.queue;
+package com.dmslob.collection.queue;
 
 import java.util.concurrent.BlockingQueue;
 

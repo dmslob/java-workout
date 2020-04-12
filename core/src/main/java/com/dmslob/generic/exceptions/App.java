@@ -1,10 +1,17 @@
 package com.dmslob.generic.exceptions;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class App {
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        List<? super IOException> exceptions = new ArrayList<>();
+        //exceptions.add(new Exception()); // DOES NOT COMPILE
+        exceptions.add(new IOException());
+        exceptions.add(new FileNotFoundException());
     }
 }
 

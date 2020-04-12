@@ -1,4 +1,4 @@
-package com.dmslob.collection;
+package com.dmslob.collection.map;
 
 import java.util.Map;
 import java.util.WeakHashMap;

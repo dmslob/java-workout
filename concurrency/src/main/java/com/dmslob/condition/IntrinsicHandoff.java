@@ -44,5 +44,4 @@ public final class IntrinsicHandoff<T> implements Handoff<T> {
         this.notifyAll();
         return obj;
     }
-
 }

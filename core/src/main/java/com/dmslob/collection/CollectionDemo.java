@@ -176,4 +176,14 @@ public class CollectionDemo {
         firstList.addAll(listTwoCopy);
         return firstList;
     }
+
+    void removeElements() {
+        List<String> strings = new ArrayList<>();
+        strings.add("Magician");
+        strings.add("Assistant");
+        System.out.println(strings); // [Magician, Assistant]
+
+        strings.removeIf(s -> s.startsWith("A"));
+        System.out.println(strings); // [Magician]
+    }
 }

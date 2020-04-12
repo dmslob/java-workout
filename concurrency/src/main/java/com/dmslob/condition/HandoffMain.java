@@ -5,13 +5,12 @@ import java.util.concurrent.*;
 public class HandoffMain {
 
     public static void main(String[] args) throws InterruptedException {
-        Handoff<Object> handoff;
-        handoff = new IntrinsicHandoff<>();
+        Handoff<Object> handoff = new IntrinsicHandoff<>();
 //        handoff = new ExplicitHandoff<>();
 //        handoff = new AqsHandoff<>();
 
         ExecutorService executorService = Executors.newCachedThreadPool();
-        CompletionService<Void> cs = new ExecutorCompletionService<Void>(executorService);
+        CompletionService<Void> cs = new ExecutorCompletionService<>(executorService);
         int numTakers = 3;
         for (int i = 0; i < numTakers; i++) {
             cs.submit(new HandoffTaker(handoff), null);
@@ -33,5 +32,4 @@ public class HandoffMain {
 
         executorService.shutdown();
     }
-
 }

@@ -1,4 +1,4 @@
-package com.dmslob.collections;
+package com.dmslob.collection;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

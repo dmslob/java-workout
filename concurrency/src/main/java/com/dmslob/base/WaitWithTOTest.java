@@ -13,11 +13,13 @@ public class WaitWithTOTest {
         Object sync = new Object();
         Thread t = new Thread(new WaitingThread(sync));
         t.start();
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
             log("main::Interrupted: " + ex.getMessage());
         }
+
         synchronized (sync) {
             log("main::Sleeping for 5 seconds");
             try {
