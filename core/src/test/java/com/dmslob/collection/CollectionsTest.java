@@ -29,6 +29,22 @@ public class CollectionsTest {
     }
 
     @Test
+    public void joinTest() {
+        topics.addAll(newTopics);
+        LOGGER.info(topics.toString());
+
+        Assert.assertTrue(topics.size() == 8);
+    }
+
+    @Test
+    public void forEachRemainingTest() {
+        List<String> apps = Arrays.asList("Skype", "Facebook", "Instagram", "Twitter");
+        Iterator<String> iterator = apps.iterator();
+
+        iterator.forEachRemaining(System.out::println);
+    }
+
+    @Test
     public void disjointTest() {
         boolean isDisjoint = Collections.disjoint(topics, newTopics);
         LOGGER.info("isDisjoint={}", isDisjoint);

@@ -21,4 +21,17 @@ public class LoopTest {
 //        do
 //            while (true) ; // Compile error
     }
+
+    @Test
+    public void breakWhile() {
+        int c = 0;
+        while (true) {
+            if (c == 5) {
+                //return; //OK
+                break;
+            }
+            LOGGER.info("it={}", c);
+            c++;
+        }
+    }
 }

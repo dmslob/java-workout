@@ -12,8 +12,7 @@ public class DequeTest {
 
     private static final Logger LOGGER = LogManager.getLogger(DequeTest.class);
 
-    private Deque<String> fill() {
-        Deque<String> deque = new LinkedList<>();
+    private Deque<String> fillUp(Deque<String> deque) {
         deque.add("element 1");         //add element at tail
         deque.addFirst("element 2"); //add element at head
         deque.addLast("element 3");  //add element at tail
@@ -23,15 +22,15 @@ public class DequeTest {
 
     @Test
     public void addElementTest() {
-        Deque<String> deque = fill();
-
+        Deque<String> deque = fillUp(new LinkedList<>());
         LOGGER.info(deque.toString());
+
         Assert.assertTrue(deque.size() == 3);
     }
 
     @Test
     public void getElementTest() {
-        Deque<String> deque = fill();
+        Deque<String> deque = fillUp(new LinkedList<>());
 
         // Retrieving elements, without removing elements
         String head = deque.peek();
@@ -46,13 +45,12 @@ public class DequeTest {
         String lastElement = deque.getLast();
         LOGGER.info(lastElement);
 
-        LOGGER.info(deque.toString());
         Assert.assertTrue(deque.size() == 3);
     }
 
     @Test
     public void removeElementTest() {
-        Deque<String> deque = fill();
+        Deque<String> deque = fillUp(new LinkedList<>());
 
         String firstElement0 = deque.remove();
         LOGGER.info(firstElement0);
@@ -63,7 +61,6 @@ public class DequeTest {
         String lastElement = deque.removeLast();
         LOGGER.info(lastElement);
 
-        LOGGER.info(deque.toString());
         Assert.assertTrue(deque.size() == 0);
     }
 }

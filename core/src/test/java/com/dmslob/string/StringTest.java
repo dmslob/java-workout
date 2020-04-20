@@ -1,6 +1,5 @@
 package com.dmslob.string;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -34,25 +33,48 @@ public class StringTest {
     }
 
     @Test
-    public void removeFromStringByTextTest() {
-        String formToRemove = "Pappas & Co, a California Corporation";
-        String existedFormsString = "Pappas Family Farms, Inc.\nPappas & Co, a California Corporation\nPappas Family Farms I, LP";
-        int startIndex = existedFormsString.indexOf(formToRemove);
-        if (startIndex > 0) {
-            StringBuilder builder = new StringBuilder(existedFormsString);
-            builder.delete(startIndex, (startIndex + (formToRemove.length() + 1)));
-            existedFormsString = builder.toString();
-        }
-        LOGGER.info(existedFormsString);
-        //Assert.assertEquals("07-02-1478 07-02-1479 07-02-1481", existedFormsString);
+    public void stringHasOnlyWhiteSpacesTest() {
+        String strOne = "String to Test";
+        String strTwo = "              ";
+
+        LOGGER.info("strTwo.trim(): [" + strTwo.trim() + "]");
+
+        LOGGER.info("Is string [" + strOne + "] only whitespaces? "
+                + StringUtils.isStringAllWhiteSpace(strOne));
+
+        LOGGER.info("Is string [" + strTwo + "] only whitespaces? "
+                + StringUtils.isStringAllWhiteSpace(strTwo));
     }
 
     @Test
-    public void removeFromStringByTextByStringUtils() {
-        String formToRemove = "Pappas & Co, a California Corporation";
-        String existedFormsString = "Pappas Family Farms, Inc.\nPappas & Co, a California Corporation\nPappas Family Farms I, LP";
-        String[] splited = existedFormsString.split("\n");
+    public void countCharacterTest() {
+        String[] chars = {"a", "b", "a"};
+        long numberOfChars = StringUtils.countCharacter(chars, "a");
 
-        LOGGER.info(Arrays.toString(splited));
+        Assert.assertTrue(numberOfChars == 2);
+    }
+
+    @Test
+    public void splitStringOnArrayTest() {
+        String str = "Hello Dmytro how are you?";
+        String[] strings = StringUtils.splitStringOnArray(str);
+
+        Assert.assertTrue(strings.length == 5);
+    }
+
+    @Test
+    public void findByRegexTest() {
+        String source = "It was cool. But not ideally. It was perfect.";
+        String regex = "[^.]*(cool|perfect)[^.]*(\\.|$)";
+        String[] foundByRegex = StringUtils.findByRegex(source, regex);
+
+        Assert.assertTrue(foundByRegex.length == 2);
+    }
+
+    @Test
+    public void varNameTest() {
+        int String = 45;
+        int Runnable = 67;
+        System.out.println(String + ":" + Runnable);
     }
 }

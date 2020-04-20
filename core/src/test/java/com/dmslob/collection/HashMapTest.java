@@ -26,6 +26,21 @@ public class HashMapTest {
     }
 
     @Test
+    public void putTest() {
+        Operation opOne = new Operation("123", new BigDecimal("10"));
+        LOGGER.info("op key hashcode {}", opOne.hashCode());
+        Operation opTwo = new Operation("123", new BigDecimal("10"));
+        LOGGER.info("op key hashcode {}", opTwo.hashCode());
+
+        Map<Operation, Integer> operationIntegerMap = new HashMap<>();
+
+        operationIntegerMap.put(opOne, new Integer(1));
+        operationIntegerMap.put(opTwo, new Integer(1));
+
+        System.out.println(operationIntegerMap.size());
+    }
+
+    @Test
     public void countWordsOldTest() {
         words.forEach(word -> {
             Integer oldValue = wordToCountMap.get(word);
@@ -72,6 +87,34 @@ public class HashMapTest {
 
         BigDecimal expectedResult = new BigDecimal(-100);
         Assert.assertTrue(balances.get("456").equals(expectedResult));
+    }
+
+    @Test
+    public void getOrDefaultTest() {
+        Integer expected = 500;
+        Map<String, Integer> stringToIntegerMap = new HashMap<>();
+        stringToIntegerMap.put("a", 100);
+        stringToIntegerMap.put("b", 200);
+        stringToIntegerMap.put("c", 300);
+        stringToIntegerMap.put("d", 400);
+
+        Integer actual = stringToIntegerMap.getOrDefault("e", 500);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void replaceAllTest() {
+        HashMap<String, Integer> nameToYearOfBirthMap = new HashMap<>();
+        nameToYearOfBirthMap.put("Anna", 2000);
+        nameToYearOfBirthMap.put("Bobby", 2001);
+        nameToYearOfBirthMap.put("David", 2003);
+        nameToYearOfBirthMap.put("Lisa", 2002);
+
+        nameToYearOfBirthMap.replaceAll((name, yearOfBirth) -> 2020 - yearOfBirth);
+        Integer actual = nameToYearOfBirthMap.get("Anna");
+
+        Assert.assertEquals(new Integer(20), actual);
     }
 
     private List<Operation> getOps() {

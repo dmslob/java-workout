@@ -11,7 +11,7 @@ public class PriorityQueueTest {
     private static final Logger LOGGER = LogManager.getLogger(PriorityQueueTest.class);
 
     @Test
-    public void t() {
+    public void getElementsTest() {
         PriorityQueue<Integer> pQueue = new PriorityQueue<>();
         pQueue.add(10);
         pQueue.add(20);
