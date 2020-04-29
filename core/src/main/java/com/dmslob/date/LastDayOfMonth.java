@@ -1,14 +1,24 @@
 package com.dmslob.date;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.YearMonth;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAdjusters;
 
 public class LastDayOfMonth {
 
+    static String formatDateFromLong(String pattern, String dateStr) {
+        return DateTimeFormatter.ofPattern(pattern)
+                .format(Instant.ofEpochMilli(Long.valueOf(dateStr))
+                        .atZone(ZoneId.systemDefault()).toLocalDate());
+    }
+
     public static void main(String args[]) {
+
+        String pattern = "yyyy-MM-dd";
+        String dateToFormat = "1587700800000";
+        String dateFromLong = formatDateFromLong(pattern, dateToFormat);
+        System.out.println(dateFromLong);
 
         LocalDate lastDayofCurrentMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
         System.out.println("Last day of the current month: "

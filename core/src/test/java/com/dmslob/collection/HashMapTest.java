@@ -8,10 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HashMapTest {
 
@@ -115,6 +113,35 @@ public class HashMapTest {
         Integer actual = nameToYearOfBirthMap.get("Anna");
 
         Assert.assertEquals(new Integer(20), actual);
+    }
+
+    @Test(expected = ConcurrentModificationException.class)
+    public void failFastTest() {
+        Map<String, Integer> nameToScore = new HashMap<>();
+        nameToScore.put("Bobby", 10);
+        nameToScore.put("Jim", 20);
+
+        for (String key : nameToScore.keySet()) {
+            System.out.println(key);
+            nameToScore.put("Anna", 11);
+        }
+    }
+
+    @Test
+    public void failSafeTest() {
+        Map<String, Integer> nameToScore = new ConcurrentHashMap<>();
+        nameToScore.put("Bobby", 10);
+        nameToScore.put("Jim", 20);
+
+        for (String key : nameToScore.keySet()) {
+            System.out.println(key);
+            nameToScore.put("Anna", 11);
+        }
+
+        nameToScore.keySet().forEach(key -> {
+            System.out.println(key);
+            nameToScore.put("Anna", 11);
+        });
     }
 
     private List<Operation> getOps() {
