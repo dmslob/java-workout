@@ -39,6 +39,16 @@ public class HashMapTest {
     }
 
     @Test
+    public void orderItemsTest() {
+        Map<Integer, Integer> integerMap = new HashMap<>();
+        integerMap.put(10, 10);
+        integerMap.put(20, 20);
+        integerMap.put(30, 30);
+
+        integerMap.keySet().forEach(System.out::println);
+    }
+
+    @Test
     public void countWordsOldTest() {
         words.forEach(word -> {
             Integer oldValue = wordToCountMap.get(word);

@@ -14,19 +14,21 @@ public class PaydayAdjuster implements TemporalAdjuster {
      */
     public Temporal adjustInto(Temporal input) {
 
-        LocalDate date = LocalDate.from(input);
+        LocalDate localDate = LocalDate.from(input);
         int day;
-        if (date.getDayOfMonth() < 15) {
+
+        if (localDate.getDayOfMonth() < 15) {
             day = 15;
         } else {
-            day = date.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
-        }
-        date = date.withDayOfMonth(day);
-        if (date.getDayOfWeek() == DayOfWeek.SATURDAY ||
-                date.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            date = date.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));
+            day = localDate.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
         }
 
-        return input.with(date);
+        localDate = localDate.withDayOfMonth(day);
+        if (localDate.getDayOfWeek() == DayOfWeek.SATURDAY
+                || localDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            localDate = localDate.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));
+        }
+
+        return input.with(localDate);
     }
 }
