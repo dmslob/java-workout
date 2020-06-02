@@ -15,7 +15,8 @@ public class WorkingDaysUtilTest {
 
     @Test
     public void lastWorkDayOfCurrentMonthTest() {
-        LocalDate lastDayOfCurrentMonth = LocalDate.of(2020, 5, 21).with(TemporalAdjusters.lastDayOfMonth());
+        LocalDate lastDayOfCurrentMonth = LocalDate.of(2020, 5, 21)
+                .with(TemporalAdjusters.lastDayOfMonth());
         LocalDate lastWorkDayOfCurrentMonth = workingDaysUtil.getLastWorkingDayOfMonth(lastDayOfCurrentMonth);
 
         Assert.assertEquals(DayOfWeek.FRIDAY, lastWorkDayOfCurrentMonth.getDayOfWeek());
