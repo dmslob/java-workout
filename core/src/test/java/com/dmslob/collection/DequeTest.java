@@ -21,14 +21,6 @@ public class DequeTest {
     }
 
     @Test
-    public void addElementTest() {
-        Deque<String> deque = fillUp(new LinkedList<>());
-        LOGGER.info(deque.toString());
-
-        Assert.assertTrue(deque.size() == 3);
-    }
-
-    @Test
     public void getElementTest() {
         Deque<String> deque = fillUp(new LinkedList<>());
 
@@ -45,7 +37,7 @@ public class DequeTest {
         String lastElement = deque.getLast();
         LOGGER.info(lastElement);
 
-        Assert.assertTrue(deque.size() == 3);
+        Assert.assertEquals(3, deque.size());
     }
 
     @Test

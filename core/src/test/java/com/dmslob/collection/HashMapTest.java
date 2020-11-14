@@ -27,15 +27,16 @@ public class HashMapTest {
     public void putTest() {
         Operation opOne = new Operation("123", new BigDecimal("10"));
         LOGGER.info("op key hashcode {}", opOne.hashCode());
+
         Operation opTwo = new Operation("123", new BigDecimal("10"));
         LOGGER.info("op key hashcode {}", opTwo.hashCode());
 
         Map<Operation, Integer> operationIntegerMap = new HashMap<>();
 
-        operationIntegerMap.put(opOne, new Integer(1));
-        operationIntegerMap.put(opTwo, new Integer(1));
+        operationIntegerMap.put(opOne, 1);
+        operationIntegerMap.put(opTwo, 1);
 
-        System.out.println(operationIntegerMap.size());
+        LOGGER.info(operationIntegerMap.size());
     }
 
     @Test

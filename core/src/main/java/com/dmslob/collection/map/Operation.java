@@ -1,7 +1,6 @@
 package com.dmslob.collection.map;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class Operation {
     private final String acc;
@@ -20,13 +19,13 @@ public class Operation {
         return amount;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Operation)) return false;
-//        Operation operation = (Operation) o;
-//        return acc.equals(operation.acc);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Operation)) return false;
+        Operation operation = (Operation) o;
+        return acc.equals(operation.acc);
+    }
 
     @Override
     public int hashCode() {

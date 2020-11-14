@@ -1,47 +1,39 @@
 package com.dmslob.date;
 
-import org.apache.commons.text.WordUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.time.*;
-import java.time.temporal.ChronoField;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class DateTimeTest {
 
     @Test
-    public void testYears() {
-        String fName = "creditCardsCreationReqId";
-        String[] r = fName.split("(?=\\p{Upper})");
-        String f = Arrays.stream(r).map(s -> s.toUpperCase()).collect(Collectors.joining("_"));
-        System.out.println(f);
+    public void shouldCalculateYears() {
+        LocalDate someSpecificDate = LocalDate.of(2020, Month.SEPTEMBER, 18);
 
-        String bFalse = Objects.toString(false);
-        System.out.println("b: " + bFalse);
-        LocalDate now = LocalDate.of(2017, Month.SEPTEMBER, 18);
         SpiderMan spiderMan = new SpiderMan("The Spider Man",
                 LocalDate.of(1962, Month.SEPTEMBER, 8));
-        Period period = Period.between(spiderMan.getCreationDate(), now);
+
+        Period period = Period.between(spiderMan.getCreationDate(), someSpecificDate);
 
         final long actualYears = period.get(ChronoUnit.YEARS);
-        final long expectedYears = 53;
+        final long expectedYears = 56;
 
         Assert.assertEquals(expectedYears, actualYears);
     }
 
     @Test
-    public void testDays() {
-        LocalDate now = LocalDate.of(2017, Month.SEPTEMBER, 18);
-        SpiderMan spiderMan = new SpiderMan(
-                "The Spider Man",
-                LocalDate.of(1962,
-                        Month.SEPTEMBER, 8));
+    public void shouldCalculateDays() {
+        LocalDate someSpecificDate = LocalDate.of(2020, Month.SEPTEMBER, 18);
 
-        Period period = Period.between(spiderMan.getCreationDate(), now);
+        SpiderMan spiderMan = new SpiderMan("The Spider Man",
+                LocalDate.of(1962, Month.SEPTEMBER, 8));
+
+        Period period = Period.between(spiderMan.getCreationDate(), someSpecificDate);
 
         final long actualDays = period.get(ChronoUnit.DAYS);
         final long expectedDays = 8;
@@ -50,19 +42,15 @@ public class DateTimeTest {
     }
 
     @Test
-    public void minusDaysTest() {
-        LocalDateTime ldt = LocalDateTime
+    public void shouldSubtractDays() {
+        LocalDateTime someSpecificDate = LocalDateTime
                 .of(2020, 5, 21, 0, 0)
                 .minusMonths(4);
 
-        System.out.println(ldt.toString());
-
         int expectedMonthNumber = 1;
-        Assert.assertEquals(expectedMonthNumber, ldt.getMonthValue());
+        Assert.assertEquals(expectedMonthNumber, someSpecificDate.getMonthValue());
 
         int expectedHour = 0;
-        Assert.assertEquals(expectedHour, ldt.getHour());
-
-        System.out.println(ldt.get(ChronoField.HOUR_OF_DAY));
+        Assert.assertEquals(expectedHour, someSpecificDate.getHour());
     }
 }
