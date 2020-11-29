@@ -13,11 +13,17 @@ public class CurryingFunctionTest {
 
     @Test
     public void addTwoNumbersTest() {
+        // Given
+        int a = 2;
+        int b = 3;
         Integer expected = 5;
         Function<Integer, Function<Integer, Integer>> curryAdder = u -> v -> u + v;
-        Integer actual = curryAdder.apply(2).apply(3);
-        LOGGER.info("Add 2, 3 : " + actual);
 
+        // When
+        Integer actual = curryAdder.apply(a).apply(b);
+
+        // Then
+        LOGGER.info("{} + {} = {}", a, b, actual);
         Assert.assertEquals(expected, actual);
     }
 }

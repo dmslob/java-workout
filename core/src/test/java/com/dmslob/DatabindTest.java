@@ -2,6 +2,9 @@ package com.dmslob;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -12,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class DatabindTest {
 
-    private static final String BIRTH_DATE_DEFAULT_VALUE = "1990-01-15";
+    private static final Logger LOGGER = LogManager.getLogger(DatabindTest.class);
 
     @Test
     public void objectToMapTest() {
@@ -22,7 +25,9 @@ public class DatabindTest {
         User bobby = new User("Bobby", 35, "1");
 
         Map<String, Object> userPropertyToValue = objectMapper.convertValue(bobby, Map.class);
-        System.out.println(userPropertyToValue);
+        LOGGER.info(userPropertyToValue);
+
+        Assert.assertEquals("Bobby", userPropertyToValue.get("name"));
 
         Map<String, String> resultMap = new HashMap<>();
         userPropertyToValue.entrySet().stream().forEach(entry -> {
@@ -32,7 +37,8 @@ public class DatabindTest {
             resultMap.put(columnKey, Objects.toString(entry.getValue()));
         });
 
-        System.out.println(resultMap);
+        LOGGER.info(resultMap);
+        Assert.assertEquals("35", resultMap.get("AGE"));
     }
 }
 
@@ -69,16 +75,5 @@ class User {
 
     public void setCreditCardsCreationReqId(String creditCardsCreationReqId) {
         this.creditCardsCreationReqId = creditCardsCreationReqId;
-    }
-}
-
-enum UserField {
-    NAME("name"),
-    AGE("age");
-
-    public final String label;
-
-    UserField(String label) {
-        this.label = label;
     }
 }

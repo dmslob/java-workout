@@ -10,11 +10,11 @@ public class MathOperationTest {
     private static final Logger LOGGER = LogManager.getLogger(MathOperationTest.class);
 
     @Test
-    public void log2Test() {
+    public void testLog2() {
         int n = 1024;
         int actualResult = MathOperation.log2(n);
-        LOGGER.info("Log " + n + " to the base 2 = " + actualResult);
+        LOGGER.info("Log {} to the base 2 = {}", n, actualResult);
 
-        Assert.assertTrue(actualResult == 10);
+        Assert.assertEquals(10, actualResult);
     }
 }
