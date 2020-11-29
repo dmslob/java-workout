@@ -6,7 +6,7 @@ import org.junit.Test;
 public class IntegerTest {
 
     @Test
-    public void should_have_negative_result() {
+    public void shouldHaveNegativeResult() {
         int x = Integer.MAX_VALUE + 10;
 
         Assert.assertTrue(x < 0);
