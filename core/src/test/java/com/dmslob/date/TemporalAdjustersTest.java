@@ -1,5 +1,7 @@
 package com.dmslob.date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import java.time.DayOfWeek;
@@ -8,6 +10,8 @@ import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 
 public class TemporalAdjustersTest {
+
+    private static final Logger LOGGER = LogManager.getLogger(TemporalAdjustersTest.class);
 
     @Test
     public void temporalAdjustersTest() {

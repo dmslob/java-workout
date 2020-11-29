@@ -12,8 +12,8 @@ public class CollectionsTest {
 
     private static final Logger LOGGER = LogManager.getLogger(CollectionsTest.class);
 
-    private List<String> topics = new ArrayList<>();
-    private List<String> newTopics = new ArrayList<>();
+    private final List<String> topics = new ArrayList<>();
+    private final List<String> newTopics = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -33,7 +33,7 @@ public class CollectionsTest {
         topics.addAll(newTopics);
         LOGGER.info(topics.toString());
 
-        Assert.assertTrue(topics.size() == 8);
+        Assert.assertEquals(8, topics.size());
     }
 
     @Test
