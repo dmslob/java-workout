@@ -1,5 +1,6 @@
 package com.dmslob.collection;
 
+import com.dmslob.collection.stream.tasks.TweeterTagsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -29,6 +30,21 @@ public class CollectionsTest {
     }
 
     @Test
+    public void should_collect_tags() {
+        List<String> tweets = new ArrayList<>();
+        tweets.add("#Java and #Scala and #Scala and #Scala");
+        tweets.add("#Java and #Kotlin and #Groovy");
+        tweets.add("#Java and #Scala and #Kotlin");
+
+        TweeterTagsService tagsService = new TweeterTagsService();
+
+        Assert.assertEquals(
+                "[#Scala, #Java, #Kotlin, #Groovy]",
+                tagsService.findAndSortTagsByFrequency(tweets).toString()
+        );
+    }
+
+    @Test
     public void joinTest() {
         topics.addAll(newTopics);
         LOGGER.info(topics.toString());
@@ -39,9 +55,21 @@ public class CollectionsTest {
     @Test
     public void forEachRemainingTest() {
         List<String> apps = Arrays.asList("Skype", "Facebook", "Instagram", "Twitter");
-        Iterator<String> iterator = apps.iterator();
+        List<String> cars = new ArrayList<String>() {
+            {
+                add("BMW");
+                add("Ford");
+                add("Toyota");
+            }
+        };
 
-        iterator.forEachRemaining(System.out::println);
+        Assert.assertEquals(3, cars.size());
+
+        cars.remove(0);
+        Assert.assertEquals(2, cars.size());
+
+        cars.remove(1);
+        Assert.assertEquals(1, cars.size());
     }
 
     @Test
@@ -116,7 +144,4 @@ class Car extends Vehicle {
 }
 
 class BMW extends Car {
-}
-
-class Alto extends Car {
 }
