@@ -1,6 +1,10 @@
 package com.dmslob.base;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class BreakLoop {
+    private static final Logger logger = LogManager.getLogger(BreakLoop.class);
 
     public static void main(String[] args) {
         BreakLoop breakLoop = new BreakLoop();
@@ -12,10 +16,10 @@ public class BreakLoop {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 if (j == 2) {
-                    System.out.println("Breaking");
+                    logger.info("Breaking");
                     return;
                 }
-                System.out.println(i + " " + j);
+                logger.info(i + " " + j);
             }
         }
     }
@@ -25,12 +29,12 @@ public class BreakLoop {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 if (i * j > 6) {
-                    System.out.println("Breaking");
+                    logger.info("Breaking");
                     break outerloop;
                 }
-                System.out.println(i + " " + j);
+                logger.info(i + " " + j);
             }
         }
-        System.out.println("Done");
+        logger.info("Done");
     }
 }

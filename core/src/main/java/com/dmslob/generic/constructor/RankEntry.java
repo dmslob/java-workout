@@ -3,8 +3,8 @@ package com.dmslob.generic.constructor;
 import java.io.Serializable;
 
 public class RankEntry {
-    private String data;
-    private int rank;
+    private final String data;
+    private final int rank;
 
     public <E extends Rankable & Serializable> RankEntry(E element) {
         this.data = element.toString();

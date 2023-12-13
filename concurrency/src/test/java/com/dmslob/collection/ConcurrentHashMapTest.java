@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.LongAdder;
@@ -15,6 +16,7 @@ public class ConcurrentHashMapTest {
 
     @Test
     public void computeTest() {
+        ArrayList<String> strings;
         ConcurrentMap<String, Integer> fruitsToCount = new ConcurrentHashMap<>();
         fruitsToCount.put("apple", 1);
         fruitsToCount.put("mango", 1);

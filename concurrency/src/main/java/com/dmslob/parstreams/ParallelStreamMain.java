@@ -14,20 +14,26 @@ final class ParallelStreamMain {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ParallelStreamMain main = new ParallelStreamMain();
-        //main.summInParallel();
-        //main.summOfSquares();
-        //main.compareStreams();
+        main.sumInParallel();
+        //main.sumInParallel();
+        //main.sumInParallel();
     }
 
-    void summInParallel() throws InterruptedException, ExecutionException {
+    public void sumInParallel() throws InterruptedException, ExecutionException {
         long firstNum = 1;
         long lastNum = 1_000_000;
 
-        List<Long> aList = LongStream.rangeClosed(firstNum, lastNum)
+        List<Long> longs = LongStream.rangeClosed(firstNum, lastNum)
                 .boxed().collect(Collectors.toList());
+
         ForkJoinPool customThreadPool = new ForkJoinPool(4);
         long actualTotal = customThreadPool.submit(
-                () -> aList.parallelStream().reduce(0L, Long::sum)).get();
+                () -> {
+                    System.out.println(Thread.currentThread().getName());
+                    return longs.parallelStream()
+                            .reduce(0L, Long::sum);
+                }
+        ).get();
         System.out.println("actualTotal: " + actualTotal);
     }
 

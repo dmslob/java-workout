@@ -1,8 +1,14 @@
 package com.dmslob.base;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class MonitorCaptureTest {
 
+    private static final Logger logger = LogManager.getLogger(MonitorCaptureTest.class);
+
     public static void main(String[] args) {
+
         Object sync = new Object();
         Thread t = new Thread(new WaitingThread(sync));
         t.start();
@@ -10,7 +16,7 @@ public class MonitorCaptureTest {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
-            System.err.println("main::Interrupted: " + ex.getMessage());
+            logger.error("main::Interrupted: " + ex.getMessage());
         }
 
         synchronized (sync) {

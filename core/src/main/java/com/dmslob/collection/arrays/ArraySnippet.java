@@ -127,7 +127,7 @@ public class ArraySnippet {
         }
     }
 
-    public static int binarySearch(int integers[], int key) {
+    public static int binarySearch(int[] integers, int key) {
         int left = 0;
         int right = integers.length - 1;
 
@@ -145,7 +145,7 @@ public class ArraySnippet {
         return -1;
     }
 
-    public static int recursiveBinarySearch(int arr[], int left, int right, int key) {
+    public static int recursiveBinarySearch(int[] arr, int left, int right, int key) {
         if (right >= left) {
             int mid = left + (right - left) / 2;
 

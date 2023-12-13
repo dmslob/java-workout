@@ -72,11 +72,24 @@ public class CompletableFutureTest {
 
     @Test
     public void thenApplyTest() throws ExecutionException, InterruptedException {
-        CompletableFuture<String> completedFuture = CompletableFuture.completedFuture("message").thenApply(s -> {
-            assertFalse(Thread.currentThread().isDaemon());
-            return s.toUpperCase();
-        });
+        var completedFuture =
+                CompletableFuture.completedFuture("message")
+                        .thenApply(s -> {
+                            assertFalse(Thread.currentThread().isDaemon());
+                            return s.toUpperCase();
+                        });
         assertEquals("MESSAGE", completedFuture.getNow(null));
+    }
+
+    @Test
+    public void should_supplyAsync_and_thenApply() {
+        CompletableFuture.supplyAsync(() -> {
+            System.out.println(Thread.currentThread().getName());
+            return null;
+        }).thenApply(u -> {
+            System.out.println(Thread.currentThread().getName());
+            return null;
+        });
     }
 
     @Test

@@ -1,13 +1,12 @@
 package com.dmslob.reflection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ShutDownHook {
-    private static final Logger LOGGER = LogManager.getLogger(ShutDownHook.class);
 
     public void shutDown() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> LOGGER.info("Shutdown Hook is running !")));
-        LOGGER.info("Application Terminating ...");
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> log.info("Shutdown Hook is running !")));
+        log.info("Application Terminating ...");
     }
 }

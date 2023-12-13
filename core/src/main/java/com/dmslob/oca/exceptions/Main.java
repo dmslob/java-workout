@@ -1,7 +1,5 @@
 package com.dmslob.oca.exceptions;
 
-import org.apache.tools.ant.filters.EscapeUnicode;
-
 import java.io.IOException;
 
 public class Main {

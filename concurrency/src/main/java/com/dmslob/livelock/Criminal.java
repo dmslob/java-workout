@@ -1,23 +1,32 @@
 package com.dmslob.livelock;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Criminal {
+	private static final Logger log = LogManager.getLogger(Criminal.class);
 
-    private boolean hostageReleased = false;
+	private boolean hostageReleased = false;
 
-    public void releaseHostage(Police police) {
-        while (!police.isMoneySent()) {
-            System.out.println("Criminal: waiting police to give ransom");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
-        System.out.println("Criminal: released hostage");
-        this.hostageReleased = true;
-    }
+	public void tryToReleaseHostage(Police police) {
+		while (!police.isMoneySent()) {
+			waitForRansom();
+		}
+		log.info("Criminal released hostage");
+		this.hostageReleased = true;
+	}
 
-    boolean isHostageReleased() {
-        return this.hostageReleased;
-    }
+	private void waitForRansom() {
+		log.info("Criminal is waiting police to give ransom");
+		try {
+			Thread.sleep(2000);
+		}
+		catch (InterruptedException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	boolean isHostageReleased() {
+		return this.hostageReleased;
+	}
 }

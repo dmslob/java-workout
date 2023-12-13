@@ -1,43 +1,82 @@
 package com.dmslob.types;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.testng.annotations.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class IntegerTest {
-
     @Test
-    public void shouldHaveNegativeResult() {
+    public void should_have_negative_result() {
+        // given
         int x = Integer.MAX_VALUE + 10;
-
+        // when | then
         Assert.assertTrue(x < 0);
     }
 
     @Test
-    public void shouldAssignHex() {
-        int x = 0xff;
-        Assert.assertEquals(255, x);
-
-        /** Since Java represents a byte using 8 bits and because a byte is a signed data type,
-         *  the value of 0xff is -1
-         *  */
-        byte y = (byte) 0xff;
-        Assert.assertEquals(-1, y);
+    public void should_throw_error_when_cast_to_object() {
+        // given
+        Object number = 12;
+        // then
+        assertThat(number).isEqualTo(12);
+        // when
+        assertThatThrownBy(() -> {
+            Integer integer = (Integer) new Object();
+        }).isInstanceOf(ClassCastException.class);
     }
 
     @Test
-    public void testBitwiseAnd() {
-        int rgba = 272214023;
+    public void should_cast_to_first_type() {
+        char x = 'X';
+        int i = 0;
+        System.out.println(true ? x : 0);
+        System.out.println(false ? i : x);
 
-        int r = rgba >> 24 & 0xff;
-        Assert.assertEquals(16, r);
+        System.out.println("H" + "a");
+        System.out.println('H' + 'a');
 
-        int g = rgba >> 16 & 0xff;
-        Assert.assertEquals(57, g);
+        // \u0022 is the Unicode escape for double-quote (")
+        System.out.println("a\u0022.length() + \u0022b".length());
 
-        int b = rgba >> 8 & 0xff;
-        Assert.assertEquals(168, b);
+        System.out.print("iexplore:");
+        http://www.google.com;
+        System.out.println(":maximize");
+    }
 
-        int a = rgba & 0xff;
-        Assert.assertEquals(7, a);
+    @Test
+    public void should_test_loop() {
+        loopPuzzle();
+    }
+
+    public void loopPuzzle() {
+        int j = 0;
+        for (int i = 0; i < 10; i++) {
+            j = j++;
+        }
+        System.out.println(j);
+
+        int count = 0;
+        for (int i = 0; i < 10; i++) {
+            count++;
+        }
+        System.out.println(count);
+    }
+
+    @Test
+    public void foo() {
+        final int START = 2000000000;
+        float a = START;
+        System.out.println(a);
+        float r = START + 50;
+        System.out.println(r);
+
+        int count = 0;
+        for (float f = START; f < r; f++) {
+            count++;
+            System.out.println(count);
+        }
+        System.out.println(count);
     }
 }

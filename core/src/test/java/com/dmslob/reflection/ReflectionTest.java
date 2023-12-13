@@ -1,10 +1,5 @@
 package com.dmslob.reflection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,13 +7,21 @@ import java.lang.annotation.Target;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
-public class ReflectionTest {
+import org.junit.Assert;
+import org.junit.Test;
 
-    private static final Logger LOGGER = LogManager.getLogger(ReflectionTest.class);
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class ReflectionTest {
 
     private List<String> strings;
 
@@ -38,7 +41,7 @@ public class ReflectionTest {
         final ExampleAnnotation annotation = ExampleClass.class.getAnnotation(ExampleAnnotation.class);
         if (annotation != null) {
             // Some implementation here
-            LOGGER.info(annotation);
+            log.info("{}", annotation);
         }
     }
 
@@ -49,7 +52,7 @@ public class ReflectionTest {
         final Method method = String.class.getMethod("length");
         final int length = (int) method.invoke(str);
 
-        Assert.assertTrue(length == 10);
+        Assert.assertEquals(10, length);
     }
 
     @Test
@@ -58,7 +61,7 @@ public class ReflectionTest {
         if (type instanceof ParameterizedType) {
             final ParameterizedType parameterizedType = (ParameterizedType) type;
             for (final Type typeArgument : parameterizedType.getActualTypeArguments()) {
-                LOGGER.info(typeArgument);
+                log.info("{}", typeArgument);
             }
         }
     }
@@ -68,7 +71,7 @@ public class ReflectionTest {
         Class[] classes = new Class[1];
         classes[0] = String.class;
         final Method method = Operation.class.getDeclaredMethod("setPriorityScore", classes);
-        Arrays.stream(method.getParameters()).forEach(p -> LOGGER.info(p.getName() + ":" + p.getType()));
+        Arrays.stream(method.getParameters()).forEach(p -> log.info(p.getName() + ":" + p.getType()));
     }
 
     @Test
@@ -83,7 +86,7 @@ public class ReflectionTest {
         Operation operationsInstance = new Operation();
         setMethod.invoke(operationsInstance, "HIGH");
 
-        LOGGER.info(operationsInstance.getPriorityScore());
+        log.info(operationsInstance.getPriorityScore());
     }
 
     @Test
@@ -94,6 +97,6 @@ public class ReflectionTest {
         MethodHandle replaceHandle = lookup.findVirtual(String.class, "replace", methodType);
 
         String output = (String) replaceHandle.invoke("Jovo", Character.valueOf('o'), 'a');
-        LOGGER.info(output);
+        log.info(output);
     }
 }

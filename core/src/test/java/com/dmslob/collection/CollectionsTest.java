@@ -1,17 +1,18 @@
 package com.dmslob.collection;
 
 import com.dmslob.collection.stream.tasks.TweeterTagsService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
 
-public class CollectionsTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-    private static final Logger LOGGER = LogManager.getLogger(CollectionsTest.class);
+@Slf4j
+public class CollectionsTest {
 
     private final List<String> topics = new ArrayList<>();
     private final List<String> newTopics = new ArrayList<>();
@@ -30,7 +31,29 @@ public class CollectionsTest {
     }
 
     @Test
-    public void should_collect_tags() {
+    public void should_copy_list_ref() {
+        List<String> strings = new ArrayList<>();
+        strings.add("1");
+        strings.add("2");
+        List<String> unmodifiable = Collections.unmodifiableList(strings);
+        strings.add("3");
+
+        System.out.println(strings);
+        System.out.println(unmodifiable);
+    }
+
+    @Test
+    public void should_find_item_by_binarySearch() {
+        // when
+        int index = Collections.binarySearch(topics, "quiz");
+        // then
+        assertThat(index).isPositive();
+        assertThat(index).isEqualTo(2);
+    }
+
+    @Test
+    public void should_collect_tags_by_frequency() {
+        // given
         List<String> tweets = new ArrayList<>();
         tweets.add("#Java and #Scala and #Scala and #Scala");
         tweets.add("#Java and #Kotlin and #Groovy");
@@ -38,110 +61,201 @@ public class CollectionsTest {
 
         TweeterTagsService tagsService = new TweeterTagsService();
 
-        Assert.assertEquals(
-                "[#Scala, #Java, #Kotlin, #Groovy]",
-                tagsService.findAndSortTagsByFrequency(tweets).toString()
-        );
+        // when
+        String actualResult = tagsService.findAndSortTagsByFrequency(tweets).toString();
+
+        // then
+        Assert.assertEquals("[#Scala, #Java, #Kotlin, #Groovy]", actualResult);
     }
 
     @Test
-    public void joinTest() {
+    public void should_join_collections() {
+        // when
         topics.addAll(newTopics);
-        LOGGER.info(topics.toString());
 
+        // then
         Assert.assertEquals(8, topics.size());
     }
 
     @Test
-    public void forEachRemainingTest() {
-        List<String> apps = Arrays.asList("Skype", "Facebook", "Instagram", "Twitter");
-        List<String> cars = new ArrayList<String>() {
-            {
-                add("BMW");
-                add("Ford");
-                add("Toyota");
-            }
-        };
-
-        Assert.assertEquals(3, cars.size());
-
-        cars.remove(0);
-        Assert.assertEquals(2, cars.size());
-
-        cars.remove(1);
-        Assert.assertEquals(1, cars.size());
-    }
-
-    @Test
-    public void disjointTest() {
+    public void should_define_if_collections_are_disjoint() {
+        // when
         boolean isDisjoint = Collections.disjoint(topics, newTopics);
-        LOGGER.info("isDisjoint={}", isDisjoint);
 
+        // then
         Assert.assertTrue(isDisjoint);
     }
 
     @Test
-    public void pecsExtendsTest() {
-        // Covariance
-        List<Integer> ints = new ArrayList<>();
-        List<? extends Number> nums = ints;
-
-        List<Vehicle> vehicles = new ArrayList<>();
-        vehicles.add(new Vehicle());
-
-        repair(vehicles);
+    public void should_sum_numbers_by_reduce_method() {
+        // given
+        List<Integer> integers = Arrays.asList(1, 2, 3, 4, 5);
+        // when
+        Integer sum = integers.stream()
+                .reduce(0, Integer::sum);
+        // then
+        assertThat(sum).isEqualTo(15);
     }
 
     @Test
-    public void pecsSuperTest() {
-        // Contravariance
-        List<Number> nums = new ArrayList<>();
-        List<? super Integer> ints = nums;
-
-        List<Vehicle> vehicles = new ArrayList<>();
-        accept(vehicles, new Vehicle());
-        accept(vehicles, new Car());
-        accept(vehicles, new BMW());
+    public void should_sum_numbers_by_collect_method() {
+        // given
+        List<Integer> integers = Arrays.asList(1, 2, 3, 4, 5);
+        // when
+        Integer sum = integers.stream().mapToInt(Integer::intValue).sum();
+        // then
+        assertThat(sum).isEqualTo(15);
     }
 
     @Test
-    public void pecsTest() {
-        List<Number> nums = Arrays.<Number>asList(4.1F, 0.2F);
-        List<Integer> ints = Arrays.asList(1, 2);
-        Collections.copy(nums, ints);
-        //Collections.copy(ints, nums); // Compile time error
+    public void should_reverse_list_by_reverse_from_java() {
+        // given
+        List<String> expectedList = new LinkedList<>(List.of("3", "2", "1"));
+        List<String> strings = new LinkedList<>(List.of("1", "2", "3"));
+
+        // when
+        Collections.reverse(strings);
+
+        // then
+        assertThat(strings).isEqualTo(expectedList);
     }
 
     @Test
-    public void rawTypesTest() {
-        ArrayList<String> strings = new ArrayList<>();
-        ArrayList arrayList = new ArrayList();
-        arrayList = strings; // Ok
-        strings = arrayList; // Unchecked assignment
-        arrayList.add(1); //unchecked call
+    public void should_reverse_list() {
+        // given
+        List<String> expectedList = new LinkedList<>(List.of("3", "2", "1"));
+        List<String> strings = new LinkedList<>(List.of("1", "2", "3"));
+
+        // when
+        var reversedList = reverseList(strings);
+
+        // then
+        assertThat(reversedList).isEqualTo(expectedList);
     }
 
-    public void repair(List<? extends Vehicle> vehicles) {
-        // repair each vehicle one by one
-        Vehicle vehicle = vehicles.get(0);
-        vehicles.add(null);
-        //vehicles.add(new Vehicle()); //Compile time error
-        //vehicles.add(new Car()); //Compile time error
-        //vehicles.add(new BMW()); //Compile time error
+    private static <T> List<T> reverseList(List<T> list) {
+        List<T> reversedList = new LinkedList<>();
+        LinkedList<T> linkedList = (LinkedList<T>) list;
+        while (!linkedList.isEmpty()) {
+            reversedList.add(linkedList.removeLast());
+        }
+        return reversedList;
     }
 
-    public void accept(List<? super Vehicle> vehicles, Vehicle v) {
-        // register a vehicle for repairing in garage
-        vehicles.add(v);
-        Vehicle vehicle = (Vehicle) vehicles.get(0);
+    @Test
+    public void should_test_fail_fast_iteration() {
+        // given
+        List<Integer> integers = new ArrayList<>(List.of(1, 2, 3));
+
+        // when
+        Iterator<Integer> iterator = integers.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next() == 3) {
+                iterator.remove(); // OK!
+            }
+        }
+        // then
+        assertThat(integers).isEqualTo(List.of(1, 2));
+
+        // but when
+        iterator = integers.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next() == 1) {
+                integers.remove(1); // ConcurrentModificationException
+                integers.add(1); // ConcurrentModificationException
+            }
+        }
     }
-}
 
-class Vehicle {
-}
+    @Test
+    public void should_union_lists() {
+        // given
+        var first = List.of("a", "b", "c", "d", "f");
+        var second = List.of("a", "b", "c", "d", "e");
+        var expected = List.of("a", "b", "c", "d", "e", "f");
+        // when
+        var union = CollectionUtil.union(first, second);
+        // then
+        assertThat(union).isEqualTo(expected);
+    }
 
-class Car extends Vehicle {
-}
+    @Test
+    public void should_find_intersection() {
+        // given
+        var expected = List.of("B", "C");
+        var first = List.of("A", "B", "C");
+        var second = List.of("B", "C", "D", "E", "F");
+        // when
+        var intersected = CollectionUtil.intersection(first, second);
+        // then
+        assertThat(intersected).isEqualTo(expected);
+    }
 
-class BMW extends Car {
+    @Test
+    public void should_find_intersection_by_retainAll() {
+        // given
+        var expected = List.of("B", "C");
+        var first = List.of("A", "B", "C");
+        var second = new ArrayList<>(List.of("B", "C", "D", "E", "F"));
+        // when
+        second.retainAll(first);
+        // then
+        assertThat(second).isEqualTo(expected);
+    }
+
+    @Test
+    public void should_merge_lists_with_duplicates() {
+        // given
+        var expected = List.of("A", "B", "C", "B", "C", "D", "E", "F");
+        var first = List.of("A", "B", "C");
+        var second = List.of("B", "C", "D", "E", "F");
+        // when
+        var merged = CollectionUtil.merge(first, second);
+        // then
+        assertThat(merged).isEqualTo(expected);
+    }
+
+    @Test
+    public void should_merge_lists_without_duplicates_by_set() {
+        // given
+        var expected = List.of("A", "B", "C", "D", "E", "F");
+        var first = List.of("A", "B", "C");
+        var second = List.of("B", "C", "D", "E", "F");
+        // when
+        var merged = CollectionUtil.mergeWithoutDuplicatesBySet(first, second);
+        // then
+        assertThat(merged).isEqualTo(expected);
+    }
+
+    @Test
+    public void should_merge_lists_without_duplicates() {
+        // given
+        var expected = List.of("A", "B", "C", "D", "E", "F");
+        var first = new ArrayList<>(List.of("A", "B", "C"));
+        var second = new ArrayList<>(List.of("B", "C", "D", "E", "F"));
+        // when
+        var merged = CollectionUtil.mergeWithoutDuplicates(first, second);
+        // then
+        assertThat(merged).isEqualTo(expected);
+    }
+
+    @Test
+    public void should_check_collection() {
+        // given
+        var ids = new ArrayList<String>();
+        ids.add("ID12");
+        // when
+        List objIds = ids;
+        objIds.add(2);
+        // then
+        assertThat(objIds).contains("ID12");
+        assertThat(objIds).contains(2);
+
+        // when
+        var typeSafeList = Collections.checkedList(objIds, String.class);
+
+        // then
+        assertThatThrownBy(() -> typeSafeList.add(2))
+                .isInstanceOf(ClassCastException.class);
+    }
 }

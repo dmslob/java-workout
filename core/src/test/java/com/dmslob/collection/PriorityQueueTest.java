@@ -1,14 +1,13 @@
 package com.dmslob.collection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Test;
-
 import java.util.PriorityQueue;
 
-public class PriorityQueueTest {
+import org.junit.Test;
 
-    private static final Logger LOGGER = LogManager.getLogger(PriorityQueueTest.class);
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class PriorityQueueTest {
 
     @Test
     public void getElementsTest() {
@@ -17,15 +16,15 @@ public class PriorityQueueTest {
         pQueue.add(20);
         pQueue.add(15);
 
-        LOGGER.info(pQueue.toString());
+        log.info(pQueue.toString());
 
         // top element
-        LOGGER.info(pQueue.peek());
+        log.info("{}", pQueue.peek());
 
         // Printing the top element and removing it
-        LOGGER.info(pQueue.poll());
+        log.info("{}", pQueue.poll());
 
         // top element again
-        LOGGER.info(pQueue.peek());
+        log.info("{}", pQueue.peek());
     }
 }

@@ -5,47 +5,35 @@ import java.util.List;
 
 public class BracketsValidator {
 
-    private final char OPEN_BRACKET = '(';
-    private final char CLOSE_BRACKET = ')';
+	private static final char OPEN_BRACKET = '(';
+	private static final char CLOSE_BRACKET = ')';
 
-    public static void main(String[] args) {
-        BracketsValidator validator = new BracketsValidator();
+	public List<Integer> validate(String expression) {
+		var chars = new LinkedList<Character>();
+		var noValidPositions = new LinkedList<Integer>();
 
-        String expression = "1+2)/(1+7";
-        List<Integer> indicesOfNoValidPositions = validator.check(expression);
-
-        System.out.println(indicesOfNoValidPositions);
-    }
-
-    public List<Integer> check(String expression) {
-
-        LinkedList<Character> listChars = new LinkedList<>();
-        LinkedList<Integer> listNoValidPositions = new LinkedList<>();
-
-        for (int i = 0; i < expression.length(); i++) {
-
-            char currentSymbol = expression.charAt(i);
-            switch (currentSymbol) {
-                case OPEN_BRACKET:
-                    listChars.addFirst(currentSymbol);
-                    listNoValidPositions.addFirst(i);
-                    break;
-                case CLOSE_BRACKET:
-                    if (!listChars.isEmpty()) {
-                        char chClosed = listChars.removeFirst();
-                        listNoValidPositions.removeFirst();
-                        if (currentSymbol == CLOSE_BRACKET && chClosed != OPEN_BRACKET) {
-                            listNoValidPositions.addFirst(i);
-                        }
-                    } else {
-                        listNoValidPositions.addFirst(i);
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        return listNoValidPositions;
-    }
+		for (int i = 0; i < expression.length(); i++) {
+			char currentChar = expression.charAt(i);
+			switch (currentChar) {
+				case OPEN_BRACKET:
+					chars.addFirst(currentChar);
+					noValidPositions.addFirst(i);
+					break;
+				case CLOSE_BRACKET:
+					if (!chars.isEmpty()) {
+						char chClosed = chars.removeFirst();
+						noValidPositions.removeFirst();
+						if (OPEN_BRACKET != chClosed) {
+							noValidPositions.addFirst(i);
+						}
+					} else {
+						noValidPositions.addFirst(i);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		return noValidPositions;
+	}
 }

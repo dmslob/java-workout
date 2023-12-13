@@ -1,15 +1,15 @@
 package com.dmslob.collection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Assert;
+import org.junit.Test;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class SetTest {
-    private static final Logger LOGGER = LogManager.getLogger(SetTest.class);
 
     @Test
     public void addAllTest() {
@@ -22,7 +22,7 @@ public class SetTest {
         newNames.add("Billy");
 
         boolean modified = commonPoolNames.addAll(newNames);
-        LOGGER.info(commonPoolNames);
+        log.info("{}", commonPoolNames);
 
         Assert.assertTrue(modified);
     }

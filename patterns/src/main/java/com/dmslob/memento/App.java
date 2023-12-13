@@ -3,7 +3,8 @@ package com.dmslob.memento;
 public class App {
 
 //    Benefits of Memento:
-//    - Memento design pattern provides a way of storing the internal state of an object in a separate object without violating rule of design pattern.
+//    - Memento design pattern provides a way of storing the internal state of an object
+//      in a separate object without violating rule of design pattern.
 //    - Memento pattern records the objects state without understanding encapsulation.
 //    - It eliminates the requirement for multiple creation of the same object for the sole purpose of saving its state.
 //    - It mainly provides a recovery mechanism in case failure occurs.

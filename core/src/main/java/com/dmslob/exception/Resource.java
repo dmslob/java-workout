@@ -1,15 +1,18 @@
 package com.dmslob.exception;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Resource implements AutoCloseable {
 
     public void use() {
-        System.out.println("Use");
-        //throw new RuntimeException("This exception in the use method");
+        log.info("use()");
+        throw new RuntimeException("Some exception");
     }
 
     @Override
     public void close() throws Exception {
-        System.out.println("Close()");
-        //throw new NullPointerException("This exception in the close method");
+        log.info("close()");
+        throw new NullPointerException("This exception in the close method");
     }
 }

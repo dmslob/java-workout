@@ -1,21 +1,21 @@
 package com.dmslob;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class DatabindTest {
+import org.junit.Assert;
+import org.junit.Test;
 
-    private static final Logger LOGGER = LogManager.getLogger(DatabindTest.class);
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class DatabindTest {
 
     @Test
     public void objectToMapTest() {
@@ -25,7 +25,7 @@ public class DatabindTest {
         User bobby = new User("Bobby", 35, "1");
 
         Map<String, Object> userPropertyToValue = objectMapper.convertValue(bobby, Map.class);
-        LOGGER.info(userPropertyToValue);
+        log.info("{}", userPropertyToValue);
 
         Assert.assertEquals("Bobby", userPropertyToValue.get("name"));
 
@@ -37,7 +37,7 @@ public class DatabindTest {
             resultMap.put(columnKey, Objects.toString(entry.getValue()));
         });
 
-        LOGGER.info(resultMap);
+        log.info("{}", resultMap.toString());
         Assert.assertEquals("35", resultMap.get("AGE"));
     }
 }

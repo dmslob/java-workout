@@ -1,11 +1,6 @@
 package com.dmslob.oop.diamondproblem;
 
-/**
- * Created by Dmytro_Slobodenyuk on 9/12/2018.
- */
-
 public class Main {
-
     public static void main(String[] args) {
         new ABImpl().foo();
         new SubClass().foo();

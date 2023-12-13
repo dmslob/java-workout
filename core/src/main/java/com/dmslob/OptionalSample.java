@@ -10,37 +10,39 @@ public class OptionalSample {
         name.isPresent();
         System.out.println(name1.get());
 
+        Optional.of("John").orElse("hello");
+
         USB usb = new USB();
-        Soundcard soundcard = new Soundcard(usb);
+        SoundCard soundcard = new SoundCard(usb);
         Computer computer = new Computer(soundcard);
-        System.out.println(computer.getSoundcard().getUSB().getVersion());
+        System.out.println(computer.getSoundCard().getUSB().getVersion());
     }
 }
 
 class Computer {
-    private Optional<Soundcard> soundcard;
+    private Optional<SoundCard> soundCard;
 
     public Computer() {
-        this.soundcard = Optional.empty();
+        this.soundCard = Optional.empty();
     }
 
-    public Computer(Soundcard soundcard) {
-        this.soundcard = Optional.of(soundcard);
+    public Computer(SoundCard soundcard) {
+        this.soundCard = Optional.of(soundcard);
     }
 
-    public Soundcard getSoundcard() {
-        return soundcard.get();
+    public SoundCard getSoundCard() {
+        return soundCard.get();
     }
 }
 
-class Soundcard {
+class SoundCard {
     private Optional<USB> usb;
 
-    public Soundcard() {
+    public SoundCard() {
         this.usb = Optional.empty();
     }
 
-    public Soundcard(USB usb) {
+    public SoundCard(USB usb) {
         this.usb = Optional.of(usb);
     }
 

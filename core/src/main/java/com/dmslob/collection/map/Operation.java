@@ -22,8 +22,7 @@ public class Operation {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Operation)) return false;
-        Operation operation = (Operation) o;
+        if (!(o instanceof Operation operation)) return false;
         return acc.equals(operation.acc);
     }
 

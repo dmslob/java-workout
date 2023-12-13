@@ -1,113 +1,116 @@
 package com.dmslob.stream;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Consumer;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
+@Slf4j
 public class StreamTest {
-    private static final Logger LOGGER = LogManager.getLogger(StreamTest.class);
 
     @Test
-    public void maxTest() {
-        /**
-         * Just warning: Method reference mapped to Comparator interface does not fulfill
+    public void should_have_warning_when_no_comparator_contract_in_method_reference() {
+        /*
+         * Warning:
+         * Method reference mapped to Comparator interface does not fulfill
          * the Comparator contract
+         * use .max(Comparator.naturalOrder())
          */
-        Integer actualResult = Stream.of(-1, 0, 1).max(Math::max).get();
-        LOGGER.info("actualResult: {}", actualResult);
+        Integer maxNumber = Stream.of(-1, 0, 1)
+                .max(Math::max).get();
 
-        Assert.assertEquals(new Integer(-1), actualResult);
+        Assert.assertEquals(Integer.valueOf(-1), maxNumber);
     }
 
     @Test
-    public void debugStreamTest() {
-        Stream.of("one", "two", "three", "four")
-                .filter(e -> e.length() > 3)
-                .peek(e -> LOGGER.info("Filtered value: " + e))
-                .map(String::toUpperCase)
-                .peek(e -> LOGGER.info("Mapped value: " + e))
-                .collect(Collectors.toList());
+    public void should_dropWhile() {
+        List<Integer> c1 = List.of(2, 4, 6, 3, 1, 8, 7);
+        var r = c1.stream()
+                .dropWhile(n -> n % 2 == 0)
+                .toList();
+        System.out.println(r);
     }
 
     @Test
-    public void streamWithConsumerTest() {
-        Stream.of(1, 2)
-                .peek(
-                        ((Consumer<Integer>) (i1) -> {
-                            i1 = i1 + 1;
-                        }).andThen((i2) -> {
-                            i2 = i2 + 2;
-                        }))
-                .forEach(LOGGER::info);
+    public void should_takeWhile() {
+        List<Integer> numbers = List.of(25, 26, 28, 31, 29, 27, 22);
+        List<Integer> result = numbers.stream()
+                .takeWhile(t -> t <= 30)
+                .toList();
+        System.out.println(result);
     }
 
     @Test
-    public void mutateTheStateTest() {
-        List<Point> points = new ArrayList<>();
-        points.add(new Point(10, 20));
-        points.add(new Point(5, 10));
-
-        List<Point> newPoints = points.stream()
-                .peek(point -> point.setX(11))
-                .collect(Collectors.toList());
-
-        LOGGER.info("{}", newPoints.toString());
-    }
-
-    @Test
-    public void sortedStreamTest() {
-        List<Point> points = new ArrayList<>();
+    public void should_sort_stream_with_comparator() {
+        // given
+        var points = new ArrayList<Point>();
         points.add(new Point(10, 20));
         points.add(new Point(5, 10));
         points.add(new Point(1, 100));
         points.add(new Point(50, 2000));
 
-        // displaying the stream with elements
-        // sorted according to x coordinate
         Comparator<Integer> pointComparator = Integer::compareTo;
-        points.stream()
+
+        // when
+        var sortedPoints = points.stream()
                 //.sorted((p1, p2) -> p1.getX().compareTo(p2.getX()))
-                .sorted(Comparator.comparing(p -> p.getX(), pointComparator))
-                .forEach(LOGGER::info);
+                .sorted(Comparator.comparing(Point::getX, pointComparator))
+                .collect(Collectors.toList());
+        // then
+        assertThat(sortedPoints).isNotSameAs(points);
+        assertThat(sortedPoints.get(0).getX())
+                .isEqualTo(1);
     }
 
     @Test
-    public void findItemsFromOneListOnValuesFromAnotherListTest() {
-        Integer expectedId = 1;
-        List<Employee> employeeList = new ArrayList<>();
-        List<Department> departmentList = new ArrayList<>();
+    public void foo() {
+        // given
+        var integers = List.of(1, 2, 3, 4, 5);
+        List<Integer> storage = Collections.synchronizedList(new ArrayList<>());
 
-        populate(employeeList, departmentList);
+        // when
+        var o = integers.parallelStream()
+                // Don't do this! It uses a stateful lambda expression.
+                .map(e -> {
+                    storage.add(e);
+                    return e;
+                })
+                .toList();
 
-        List<Employee> filteredList = employeeList.stream()
-                .filter(employee -> departmentList.stream()
-                        .anyMatch(department -> department.getDepartment().equals("SALES") &&
-                                employee.getEmployeeId().equals(department.getEmployeeId())
-                        )
-                )
-                .collect(Collectors.toList());
-
-        Assert.assertEquals(1, filteredList.size());
+        System.out.println(storage);
     }
 
-    private void populate(List<Employee> employeeList, List<Department> departmentList) {
-        Employee bobby = new Employee(1, "Bobby");
-        Employee molly = new Employee(2, "Molly");
-        Employee freddy = new Employee(3, "Freddy");
-        employeeList.addAll(Arrays.asList(bobby, molly, freddy));
+    @Test
+    public void should_throw_exception_when_interference_occurs() {
+        var strings = new ArrayList<>(Arrays.asList("one", "two"));
+        // This will fail as the peek operation will attempt to add the
+        // string "three" to the source after the terminal operation has
+        // commenced.
+        assertThatThrownBy(() -> strings
+                .stream()
+                // Don't do this! Interference occurs here.
+                .peek(s -> strings.add("three"))
+                .collect(Collectors.joining(" ")))
+                .isInstanceOf(ConcurrentModificationException.class);
+    }
 
-        Department salesDepartment = new Department(1, "SALES");
-        Department it = new Department(2, "IT");
-        Department newDepartment = new Department(3, "NEW");
-        departmentList.addAll(Arrays.asList(salesDepartment, it, newDepartment));
+    @Test
+    public void should_copy_source() {
+        // given
+        var users = new ArrayList<>(Arrays.asList("Bob", "Arnold"));
+        var usersStream = users.stream();
+        users.add("Anna");
+
+        // when
+        String joinedUserNames = usersStream
+                .collect(Collectors.joining(" "));
+        // then
+        assertThat(joinedUserNames).isEqualTo("Bob Arnold Anna");
     }
 }

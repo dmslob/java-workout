@@ -4,9 +4,6 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Proxy;
 
-/**
- * Created by Dmytro_Slobodenyuk on 8/10/2018.
- */
 public class DynamicDemo {
 
     public static void main(String args[]) {

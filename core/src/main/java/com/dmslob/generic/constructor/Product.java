@@ -3,41 +3,35 @@ package com.dmslob.generic.constructor;
 import java.io.Serializable;
 
 public class Product implements Rankable, Serializable {
-    private String name;
-    private double price;
-    private int sales;
+	private final String name;
+	private final double price;
+	private final int sale;
 
-    public Product(String name, double price) {
-        this.name = name;
-        this.price = price;
-    }
+	public Product(String name, double price, int sale) {
+		this.name = name;
+		this.price = price;
+		this.sale = sale;
+	}
 
-    @Override
-    public int getRank() {
-        return sales;
-    }
+	@Override
+	public int getRank() {
+		return sale;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public double getPrice() {
+		return price;
+	}
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getSales() {
-        return sales;
-    }
-
-    public void setSales(int sales) {
-        this.sales = sales;
-    }
+	@Override
+	public String toString() {
+		return "Product{" +
+				"name='" + name + '\'' +
+				", price=" + price +
+				", sale=" + sale +
+				'}';
+	}
 }

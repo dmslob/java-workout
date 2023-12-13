@@ -15,12 +15,6 @@ public class UnboundedWildCardDemo {
         demo.covariantTypes();
     }
 
-    // If List<?> listParam -> Compile error
-    // If List<? extend T> listParam -> Compile error
-    public <T> void addElement(List<? super T> listParam, T val) {
-        listParam.add(val);
-    }
-
     public void wildCardIllegalOperations() {
         List<?> listOfObjects = new ArrayList<>();
         listOfObjects.add(null);

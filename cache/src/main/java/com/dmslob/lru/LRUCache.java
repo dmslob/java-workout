@@ -2,10 +2,14 @@ package com.dmslob.lru;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+/**
+ * LRU (Last recently used) cache
+ */
 public class LRUCache<K, V> {
     private final int capacity;
-    private Map<K, Node<K, V>> cache = new HashMap<>();
+    private final Map<K, Node<K, V>> storage = new HashMap<>();
 
     private Node<K, V> head = null;
     private Node<K, V> tail = null;
@@ -15,8 +19,8 @@ public class LRUCache<K, V> {
     }
 
     public V get(K key) {
-        if (cache.containsKey(key)) {
-            Node<K, V> n = cache.get(key);
+        if (storage.containsKey(key)) {
+            Node<K, V> n = storage.get(key);
             delete(n);
             setHead(n);
             return n.value;
@@ -24,7 +28,15 @@ public class LRUCache<K, V> {
         return null;
     }
 
-    private void delete(Node node) {
+    public V getHead() {
+        return head.value;
+    }
+
+    public V getTail() {
+        return tail.value;
+    }
+
+    private void delete(Node<K, V> node) {
         if (node.prev != null) {
             node.prev.next = node.next;
         } else {
@@ -37,7 +49,7 @@ public class LRUCache<K, V> {
         }
     }
 
-    private void setHead(Node node) {
+    private void setHead(Node<K, V> node) {
         node.next = head;
         node.prev = null;
         if (head != null) {
@@ -50,23 +62,23 @@ public class LRUCache<K, V> {
     }
 
     public void set(K key, V value) {
-        if (cache.containsKey(key)) {
+        if (storage.containsKey(key)) {
             // update the old value
-            Node old = cache.get(key);
+            Node<K, V> old = storage.get(key);
             old.value = value;
             delete(old);
             setHead(old);
         } else {
-            Node newNode = new Node(key, value);
-            if (cache.size() >= capacity) {
-                cache.remove(tail.key);
+            Node<K, V> newNode = new Node<>(key, value);
+            if (storage.size() >= capacity) {
+                storage.remove(tail.key);
                 // remove last node
                 delete(tail);
                 setHead(newNode);
             } else {
                 setHead(newNode);
             }
-            cache.put(key, newNode);
+            storage.put(key, newNode);
         }
     }
 
@@ -81,5 +93,15 @@ public class LRUCache<K, V> {
             this.key = key;
             this.value = value;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "LRUCache{" +
+                "capacity=" + capacity +
+                ", storage=" + storage.entrySet() +
+                ", head=" + head +
+                ", tail=" + tail +
+                '}';
     }
 }
