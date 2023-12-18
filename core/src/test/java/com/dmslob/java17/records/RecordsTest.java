@@ -74,7 +74,9 @@ public class RecordsTest {
 
         @Override
         public int hashCode() {
-            return new HashCodeBuilder(17, 37).append(name).toHashCode();
+            return new HashCodeBuilder(17, 37)
+                    .append(name)
+                    .toHashCode();
         }
     }
 }

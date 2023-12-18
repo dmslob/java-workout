@@ -26,6 +26,10 @@ import lombok.extern.slf4j.Slf4j;
  * - Instances of record classes can be serialized and deserialized.
  * - Records Can't Be JPA/Hibernate Entities, proxies rely on the entity class to have a no-args constructor
  *   and setters. Since records don't have these, they can't be used as entities.
+ * According to the JPA specification, an entity must follow these requirements:
+ *      - the entity class needs to be non-final,
+ *      - the entity class needs to have a no-arg constructor that is either public or protected,
+ *      - the entity attributes must be non-final.
  *   Other Ways to Use Records with JPA
  *   - Convert the results of a query to a record
  *   - Use records as DTOs to transfer data between layers
@@ -34,11 +38,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public record Point(int x, int y) {
-
-    // private final int z = 0; // Compile error
-
+    // private final int a = 0; // Compile error - instance field is not allowed here
 //    public Point() { // Compile error
-//
 //    }
 
     // Compact constructor

@@ -3,7 +3,6 @@ package com.dmslob.java17;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +24,6 @@ public class DayPeriodSupportTest {
         System.out.println(DateTimeFormatter.ofPattern("G").format(LocalDate.now()));
         System.out.println(DateTimeFormatter.ofPattern("z").format(ZonedDateTime.now()));
         System.out.println(DateTimeFormatter.ofPattern("v").format(ZonedDateTime.now()));
-
     }
 
     @Test

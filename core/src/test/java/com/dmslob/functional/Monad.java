@@ -3,7 +3,7 @@ package com.dmslob.functional;
 import java.util.function.Function;
 
 public class Monad<T> {
-    final T value;
+    private final T value;
 
     private Monad(T value) {
         this.value = value;
