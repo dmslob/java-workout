@@ -1,6 +1,8 @@
 package com.dmslob.types;
 
 import org.junit.Assert;
+import org.openjdk.jol.info.ClassLayout;
+import org.openjdk.jol.vm.VM;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,6 +15,18 @@ public class IntegerTest {
         int x = Integer.MAX_VALUE + 10;
         // when | then
         Assert.assertTrue(x < 0);
+
+        var a  = new Object();
+        var b = new Object();
+        assertThat(a.hashCode()).isNotEqualTo(b.hashCode());
+
+        class A {
+            boolean f;
+        }
+
+        // https://github.com/openjdk/jol?tab=readme-ov-file
+        //System.out.println(VM.current().details());
+        System.out.println(ClassLayout.parseClass(A.class).toPrintable());
     }
 
     @Test

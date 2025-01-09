@@ -29,13 +29,14 @@ public class RecursiveBoundTest {
     public void should_define_max_size_of_fruit() {
         // given
         var apples = List.of(
-                new Apple(2), new Apple(4), new Apple(6)
-        );
+                new Apple(2),
+                new Apple(4),
+                new Apple(6));
 
         var oranges = List.of(
-                new Orange(2), new Orange(4), new Orange(8)
-        );
-
+                new Orange(2),
+                new Orange(4),
+                new Orange(8));
         // when
         Apple maxApple = max(apples);
         Orange maxOrange = max(oranges);

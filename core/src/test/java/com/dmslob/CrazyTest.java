@@ -6,6 +6,16 @@ import org.testng.annotations.Test;
 public class CrazyTest {
 
     @Test
+    public void test() {
+        int i = 10;
+        i++;
+        System.out.println(i);
+        i++; i++; ++i;
+        int j = i++;
+        System.out.println(j);
+    }
+
+    @Test
     public void should_work_somehow() {
         Continuation c = new Mondo();
         c.run(c);

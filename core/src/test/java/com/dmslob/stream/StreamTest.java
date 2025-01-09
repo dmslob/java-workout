@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,20 +31,28 @@ public class StreamTest {
 
     @Test
     public void should_dropWhile() {
-        List<Integer> c1 = List.of(2, 4, 6, 3, 1, 8, 7);
-        var r = c1.stream()
+        // given
+        var nums = List.of(2, 4, 6, 3, 1, 8, 7);
+        var expectedNums = List.of(3, 1, 8, 7);
+        // when
+        var result = nums.stream()
                 .dropWhile(n -> n % 2 == 0)
                 .toList();
-        System.out.println(r);
+        // then
+        assertThat(result).isEqualTo(expectedNums);
     }
 
     @Test
     public void should_takeWhile() {
-        List<Integer> numbers = List.of(25, 26, 28, 31, 29, 27, 22);
-        List<Integer> result = numbers.stream()
+        // given
+        var numbers = List.of(25, 26, 28, 31, 29, 27, 22);
+        var expectedNums = List.of(25, 26, 28);
+        // when
+        var result = numbers.stream()
                 .takeWhile(t -> t <= 30)
                 .toList();
-        System.out.println(result);
+        // then
+        assertThat(result).isEqualTo(expectedNums);
     }
 
     @Test
@@ -66,24 +75,6 @@ public class StreamTest {
         assertThat(sortedPoints).isNotSameAs(points);
         assertThat(sortedPoints.get(0).getX())
                 .isEqualTo(1);
-    }
-
-    @Test
-    public void foo() {
-        // given
-        var integers = List.of(1, 2, 3, 4, 5);
-        List<Integer> storage = Collections.synchronizedList(new ArrayList<>());
-
-        // when
-        var o = integers.parallelStream()
-                // Don't do this! It uses a stateful lambda expression.
-                .map(e -> {
-                    storage.add(e);
-                    return e;
-                })
-                .toList();
-
-        System.out.println(storage);
     }
 
     @Test
@@ -112,5 +103,43 @@ public class StreamTest {
                 .collect(Collectors.joining(" "));
         // then
         assertThat(joinedUserNames).isEqualTo("Bob Arnold Anna");
+    }
+
+    @Test
+    public void should_find_hashtags() {
+        // given
+        var lines = List.of(
+                "#Java and #Scala are the languages of cognitive and AI dev.",
+                "#Java and #Kotlin are the languages of cognitive and AI dev.",
+                "#Scala and #Python are the languages of cognitive and AI dev.",
+                "#Go and #Java are the languages of cognitive and AI dev."
+        );
+        LinkedHashMap<String, Long> expected = new LinkedHashMap<>();
+        expected.put("#Java", 3L);
+        expected.put("#Scala", 2L);
+        expected.put("#Kotlin", 1L);
+        expected.put("#Python", 1L);
+        expected.put("#Go", 1L);
+        // when
+        LinkedHashMap<String, Long> tagPerFrequency = lines.stream()
+                .flatMap(lineWithTweets -> Arrays.stream(lineWithTweets.split(" ")))
+                .filter(tweet -> tweet.matches("#\\w+")) // or "#[A-Za-z0-9_]+"
+                .collect(Collectors.groupingBy(String::toString, LinkedHashMap::new, Collectors.counting()));
+        // then
+        assertThat(tagPerFrequency).isEqualTo(expected);
+    }
+
+    @Test
+    public void should_sum_numbers() {
+        // given
+        var integers = Arrays.asList(1, 2, 3, 4, 5);
+        var expected = 15;
+        // when
+        //var sum = integers.stream().collect(Collectors.summingInt(Integer::intValue));
+        var sum = integers.stream().mapToInt(Integer::intValue).sum();
+        // then
+        assertThat(sum).isEqualTo(expected);
+//        Map<String, Long> labelsByGroups = allLabels.stream()
+//                .collect(Collectors.groupingBy(Label::getName, Collectors.counting()));
     }
 }

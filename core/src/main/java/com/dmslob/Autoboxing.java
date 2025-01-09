@@ -3,6 +3,10 @@ package com.dmslob;
 public class Autoboxing {
 
     public static void main(String[] args) {
+        Integer s = null;
+        String sd = s + "Hello";
+        System.out.println(sd);
+
         int n = 7;
         Integer integerN = n;
         Integer a = 345;
@@ -22,6 +26,7 @@ public class Autoboxing {
 interface M {
 
     int targetMethod();
+    //int targetMethod2();
 
     boolean equals(Object obj);
 }

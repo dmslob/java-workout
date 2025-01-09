@@ -14,6 +14,7 @@ public class VarTest {
 
     @Test
     public void should_work_with_loop() {
+        Integer.bitCount(1);
         for (var s : Spiciness.values()) {
             log.info("{}", s);
         }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.testng.annotations.Test;
@@ -30,6 +31,22 @@ public class RawTypesTest {
 		})
 				.isInstanceOf(ClassCastException.class)
 				.hasMessageContaining(expectedMessage);
+	}
+
+	@Test
+	public void should_cast_items() {
+		// given
+		List i = Arrays.asList(100);
+		// when
+		int a = (int) i.get(0);
+		long b = Long.valueOf((int) i.get(0));
+		long c = Long.valueOf(i.get(0).toString());
+		long d = (long) i.get(0);
+		// then
+		System.out.println(a);
+		System.out.println(b);
+		System.out.println(c);
+		System.out.println(d);
 	}
 
 	@Test

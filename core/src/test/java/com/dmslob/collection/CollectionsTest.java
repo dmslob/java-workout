@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -237,6 +238,38 @@ public class CollectionsTest {
         var merged = CollectionUtil.mergeWithoutDuplicates(first, second);
         // then
         assertThat(merged).isEqualTo(expected);
+    }
+
+    record User(Long id, List<String> interests) {}
+
+    @Test
+    public void should_find_users_by_interest() {
+        // given
+        List<User> users = List.of(
+                new User(0L, List.of("Hadoop", "Big Data", "HBase", "Java", "Spark", "Cassandra")),
+                new User(1L, List.of("NoSQL", "MongoDB", "Cassandra", "HBase", "Postgres")),
+                new User(2L, List.of("Python", "scikit-learn", "scipy", "numpy", "statsmodels", "pandas")),
+                new User(3L, List.of("R", "Python", "statistics", "regression", "probability")),
+                new User(4L, List.of("machine learning", "regression", "decision trees", "regression", "libsvm")),
+                new User(5L, List.of("Python", "R", "Java", "C++", "Haskell", "programming languages")),
+                new User(6L, List.of("statistics", "probability", "mathematics", "theory")),
+                new User(7L, List.of("machine learning", "scikit-learn", "Mahout", "neural networks"))
+        );
+        // when
+        var usersByInterest = usersByInterest(users, "Python");
+        // then
+        System.out.println(usersByInterest);
+    }
+
+    private Map<String, List<Long>> usersByInterest(List<User> users, String interest) {
+        if (Objects.isNull(users) || users.isEmpty()) {
+            return Map.of();
+        }
+        List<Long> userIds = users.stream()
+                .filter(user -> user.interests().contains(interest))
+                .map(User::id)
+                .toList();
+        return Map.of(interest, userIds);
     }
 
     @Test
