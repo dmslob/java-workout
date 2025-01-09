@@ -9,6 +9,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class IntegerTest {
+
+    @Test
+    public void should_compare_two_integers_when_values_are_in_cache_range() {
+        // given
+        Integer a = 1;
+        Integer b = 1;
+        // when | then
+        assertThat(a == b).isTrue();
+        assertThat(a.equals(b)).isTrue();
+    }
+
+    @Test
+    public void should_compare_two_integers_when_values_are_not_in_cache_range() {
+        // given
+        Integer c = 128;
+        Integer d = 128;
+        // when | then
+        assertThat(c == d).isFalse();
+        assertThat(c.equals(d)).isTrue();
+    }
+
+    @Test
+    public void should_compare_two_integers_when_one_of_them_is_int() {
+        // given
+        int c = 128;
+        Integer d = 128;
+        // when | then
+        assertThat(c == d).isTrue();
+    }
+
+    @Test
+    public void should_equal_two_integers_when_second_is_int() {
+        // given
+        Integer c = 128;
+        int d = 128;
+        // when | then
+        assertThat(c == d).isTrue();
+    }
+
     @Test
     public void should_have_negative_result() {
         // given
@@ -21,7 +60,9 @@ public class IntegerTest {
         assertThat(a.hashCode()).isNotEqualTo(b.hashCode());
 
         class A {
-            boolean f;
+            String name;
+            int age;
+            boolean married;
         }
 
         // https://github.com/openjdk/jol?tab=readme-ov-file
