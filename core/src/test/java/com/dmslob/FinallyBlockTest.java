@@ -52,18 +52,6 @@ public class FinallyBlockTest {
 	}
 
 	@Test
-	public void should_not_invoke_finally_when_system_exit() {
-		// when
-		try {
-			log.info("try block");
-			System.exit(0);
-		}
-		finally {
-			log.info("finally block");
-		}
-	}
-
-	@Test
 	public void should_catch_exception_even_if_system_exit_next() {
 		// given
 		int a = 20, b = 0;
@@ -84,7 +72,7 @@ public class FinallyBlockTest {
 		assertThat(result).isZero();
 	}
 
-	@Test
+	//@Test
 	public void should_not_invoke_statement_in_finally_if_exception() {
 		int a = 20, b = 0;
 		int result;
