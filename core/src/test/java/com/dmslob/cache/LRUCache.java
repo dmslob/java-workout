@@ -1,8 +1,7 @@
-package com.dmslob.lru;
+package com.dmslob.cache;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * LRU (Last recently used) cache

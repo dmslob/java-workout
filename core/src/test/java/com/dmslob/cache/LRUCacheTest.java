@@ -1,4 +1,4 @@
-package com.dmslob.lru;
+package com.dmslob.cache;
 
 import org.testng.annotations.Test;
 

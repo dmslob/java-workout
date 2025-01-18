@@ -2,13 +2,13 @@ package com.dmslob.stream;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -70,7 +70,7 @@ public class StreamTest {
         var sortedPoints = points.stream()
                 //.sorted((p1, p2) -> p1.getX().compareTo(p2.getX()))
                 .sorted(Comparator.comparing(Point::getX, pointComparator))
-                .collect(Collectors.toList());
+                .collect(toList());
         // then
         assertThat(sortedPoints).isNotSameAs(points);
         assertThat(sortedPoints.get(0).getX())
@@ -141,5 +141,76 @@ public class StreamTest {
         assertThat(sum).isEqualTo(expected);
 //        Map<String, Long> labelsByGroups = allLabels.stream()
 //                .collect(Collectors.groupingBy(Label::getName, Collectors.counting()));
+    }
+
+    record Dev(Long id, String name) {
+    }
+
+    record Task(Long id, String title) {
+    }
+
+    record Assignment(Long devId, Long taskId) {
+    }
+
+    @Test
+    public void should_find_and_group_assignments() {
+        // given
+        // devs
+        var devSergio = new Dev(1L, "Sergio Dev");
+        var devDmytro = new Dev(2L, "Dmytro Dev");
+        // tasks
+        var task_1 = new Task(1L, "Task 1");
+        var task_2 = new Task(2L, "Task 2");
+        var task_3 = new Task(3L, "Task 3");
+        var task_4 = new Task(4L, "Task 4");
+        // assignments
+        var assignment_1 = new Assignment(1L, 1L);
+        var assignment_2 = new Assignment(1L, 2L);
+        var assignment_3 = new Assignment(2L, 3L);
+        var assignment_4 = new Assignment(2L, 4L);
+        var devs = List.of(devSergio, devDmytro);
+        var tasks = List.of(task_1, task_2, task_3, task_4);
+        var assignments = List.of(assignment_1, assignment_2, assignment_3, assignment_4);
+        var expectedResult = Map.of(
+                devSergio.name, List.of(task_1.title, task_2.title),
+                devDmytro.name, List.of(task_3.title, task_4.title)
+        );
+        // when
+        var actualResult = groupTasksByDev(devs, tasks, assignments);
+        // then
+        assertThat(actualResult).isEqualTo(expectedResult);
+    }
+
+    // Map<Dev::name, List.of(Task::title)>
+    private Map<String, List<String>> groupTasksByDev(
+            List<Dev> devs,
+            List<Task> tasks,
+            List<Assignment> assignments) {
+        return devs.stream()
+                .collect(Collectors.toMap(Dev::name, dev ->
+                        assignments.stream()
+                                .filter(assignment -> assignment.devId.equals(dev.id))
+                                .map(Assignment::taskId)
+                                .flatMap(taskId -> tasks.stream()
+                                        .filter(task -> taskId.equals(task.id))
+                                        .map(Task::title))
+                                .toList()
+                ));
+    }
+
+    private Map<String, List<String>> groupTasksByDev2(
+            List<Dev> devs,
+            List<Task> tasks,
+            List<Assignment> assignments) {
+        return devs.stream()
+                .collect(Collectors.groupingBy(Dev::name,
+                        Collectors.flatMapping(dev -> assignments.stream()
+                                        .filter(assignment -> assignment.devId.equals(dev.id))
+                                        .map(Assignment::taskId)
+                                        .flatMap(taskId -> tasks.stream()
+                                                .filter(task -> taskId.equals(task.id))
+                                                .map(Task::title)),
+                                toList())
+                ));
     }
 }
