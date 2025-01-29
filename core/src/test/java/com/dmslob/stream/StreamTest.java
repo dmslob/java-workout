@@ -30,7 +30,7 @@ public class StreamTest {
     }
 
     @Test
-    public void should_dropWhile() {
+    public void should_dropWhile_even_number() {
         // given
         var nums = List.of(2, 4, 6, 3, 1, 8, 7);
         var expectedNums = List.of(3, 1, 8, 7);
@@ -43,7 +43,7 @@ public class StreamTest {
     }
 
     @Test
-    public void should_takeWhile() {
+    public void should_takeWhile_less_than_30() {
         // given
         var numbers = List.of(25, 26, 28, 31, 29, 27, 22);
         var expectedNums = List.of(25, 26, 28);
@@ -55,6 +55,9 @@ public class StreamTest {
         assertThat(result).isEqualTo(expectedNums);
     }
 
+    record Point(Integer x, Integer y) {
+    }
+
     @Test
     public void should_sort_stream_with_comparator() {
         // given
@@ -63,17 +66,15 @@ public class StreamTest {
         points.add(new Point(5, 10));
         points.add(new Point(1, 100));
         points.add(new Point(50, 2000));
-
         Comparator<Integer> pointComparator = Integer::compareTo;
-
         // when
         var sortedPoints = points.stream()
-                //.sorted((p1, p2) -> p1.getX().compareTo(p2.getX()))
-                .sorted(Comparator.comparing(Point::getX, pointComparator))
+                //.sorted((p1, p2) -> p1.x().compareTo(p2.x()))
+                .sorted(Comparator.comparing(Point::x, pointComparator))
                 .collect(toList());
         // then
         assertThat(sortedPoints).isNotSameAs(points);
-        assertThat(sortedPoints.get(0).getX())
+        assertThat(sortedPoints.get(0).x())
                 .isEqualTo(1);
     }
 
@@ -97,7 +98,6 @@ public class StreamTest {
         var users = new ArrayList<>(Arrays.asList("Bob", "Arnold"));
         var usersStream = users.stream();
         users.add("Anna");
-
         // when
         String joinedUserNames = usersStream
                 .collect(Collectors.joining(" "));
@@ -106,7 +106,7 @@ public class StreamTest {
     }
 
     @Test
-    public void should_find_hashtags() {
+    public void should_count_hashtags() {
         // given
         var lines = List.of(
                 "#Java and #Scala are the languages of cognitive and AI dev.",
@@ -123,7 +123,8 @@ public class StreamTest {
         // when
         LinkedHashMap<String, Long> tagPerFrequency = lines.stream()
                 .flatMap(lineWithTweets -> Arrays.stream(lineWithTweets.split(" ")))
-                .filter(tweet -> tweet.matches("#\\w+")) // or "#[A-Za-z0-9_]+"
+                //.filter(tweet -> tweet.matches("#\\w+")) // or "#[A-Za-z0-9_]+"
+                .filter(tweet -> tweet.startsWith("#"))
                 .collect(Collectors.groupingBy(String::toString, LinkedHashMap::new, Collectors.counting()));
         // then
         assertThat(tagPerFrequency).isEqualTo(expected);
@@ -176,13 +177,17 @@ public class StreamTest {
                 devDmytro.name, List.of(task_3.title, task_4.title)
         );
         // when
-        var actualResult = groupTasksByDev(devs, tasks, assignments);
+        var actualResult = mapDevToTaskTitles(devs, tasks, assignments);
+        // then
+        assertThat(actualResult).isEqualTo(expectedResult);
+        // when
+        actualResult = groupTasksByDevs(devs, tasks, assignments);
         // then
         assertThat(actualResult).isEqualTo(expectedResult);
     }
 
     // Map<Dev::name, List.of(Task::title)>
-    private Map<String, List<String>> groupTasksByDev(
+    private Map<String, List<String>> mapDevToTaskTitles(
             List<Dev> devs,
             List<Task> tasks,
             List<Assignment> assignments) {
@@ -198,7 +203,8 @@ public class StreamTest {
                 ));
     }
 
-    private Map<String, List<String>> groupTasksByDev2(
+    // Map<Dev::name, List.of(Task::title)>
+    private Map<String, List<String>> groupTasksByDevs(
             List<Dev> devs,
             List<Task> tasks,
             List<Assignment> assignments) {
@@ -212,5 +218,40 @@ public class StreamTest {
                                                 .map(Task::title)),
                                 toList())
                 ));
+    }
+
+    record User(Long id, List<String> interests) {
+    }
+
+    @Test
+    public void should_find_users_by_interest() {
+        // given
+        List<User> users = List.of(
+                new User(0L, List.of("Hadoop", "Big Data", "HBase", "Java", "Spark", "Cassandra")),
+                new User(1L, List.of("NoSQL", "MongoDB", "Cassandra", "HBase", "Postgres")),
+                new User(2L, List.of("Python", "scikit-learn", "scipy", "numpy", "statsmodels", "pandas")),
+                new User(3L, List.of("R", "Python", "statistics", "regression", "probability")),
+                new User(4L, List.of("machine learning", "regression", "decision trees", "regression", "libsvm")),
+                new User(5L, List.of("Python", "R", "Java", "C++", "Haskell", "programming languages")),
+                new User(6L, List.of("statistics", "probability", "mathematics", "theory")),
+                new User(7L, List.of("machine learning", "scikit-learn", "Mahout", "neural networks"))
+        );
+        var expectedResult = Map.of("Python", List.of(2L, 3L, 5L));
+        // when
+        var usersByInterest = usersByInterest(users, "Python");
+        // then
+        System.out.println(usersByInterest);
+        org.testng.Assert.assertEquals(usersByInterest, expectedResult);
+    }
+
+    private Map<String, List<Long>> usersByInterest(List<User> users, String interest) {
+        if (Objects.isNull(users) || users.isEmpty()) {
+            return Map.of();
+        }
+        List<Long> userIds = users.stream()
+                .filter(user -> user.interests().contains(interest))
+                .map(User::id)
+                .toList();
+        return Map.of(interest, userIds);
     }
 }
