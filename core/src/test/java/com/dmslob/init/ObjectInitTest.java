@@ -53,6 +53,7 @@ public class ObjectInitTest {
     public void should_init_InitTest() throws NoSuchMethodException {
         System.out.println("Class: " + InitTest.class);
         InitTest[] initTests = new InitTest[10];
+
         System.out.println("array is initialized");
         System.out.println(InitTest.class.getDeclaredConstructor());
         System.out.println(new InitTest());
