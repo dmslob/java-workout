@@ -7,6 +7,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 // two-pointer technique
 public class LinkedListTwoPointerTest {
 
+    public record Node(int data, Node next) {
+    }
+
     @Test
     public void should_find_middle_element_of_list() {
         // given
@@ -28,16 +31,13 @@ public class LinkedListTwoPointerTest {
     * then the output should be 3.
      */
     public int findMiddle(Node head) {
-        var slowPointer = head;
-        var fastPointer = head;
+        var slow = head;
+        var fast = head;
 
-        while (fastPointer.next != null && fastPointer.next.next != null) {
-            fastPointer = fastPointer.next.next;
-            slowPointer = slowPointer.next;
+        while (fast.next != null && fast.next.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
         }
-        return slowPointer.data;
-    }
-
-    record Node(int data, Node next) {
+        return slow.data;
     }
 }

@@ -3,9 +3,20 @@ package com.dmslob.algorithms;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.filter;
 
 public class LinkedListCycleTest {
+
+    public static class Node {
+        private final int data;
+        private Node next;
+        public Node(int data, Node next) {
+            this.data = data;
+            this.next = next;
+        }
+        public void setNext(Node next) {
+            this.next = next;
+        }
+    }
 
     @Test
     public void should_return_false_when_no_cycle() {
@@ -46,19 +57,5 @@ public class LinkedListCycleTest {
             if (fast == slow) return true;
         }
         return false;
-    }
-
-    private static class Node {
-        private int data;
-        private Node next;
-
-        public Node(int data, Node next) {
-            this.data = data;
-            this.next = next;
-        }
-
-        public void setNext(Node next) {
-            this.next = next;
-        }
     }
 }
