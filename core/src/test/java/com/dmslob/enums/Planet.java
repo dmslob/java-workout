@@ -2,8 +2,6 @@ package com.dmslob.enums;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
 @Slf4j
 public enum Planet {
 	VENUS(4000) {
@@ -35,10 +33,6 @@ public enum Planet {
 	}
 
 	public static Planet valueOfPlanet(String label) {
-		final Number[] arr = new Number[10];
-		arr[0] = Long.valueOf("23");
-		arr[1] = Short.valueOf("34");
-
 		for (Planet planet : values()) {
 			if (planet.name().equals(label)) {
 				return planet;

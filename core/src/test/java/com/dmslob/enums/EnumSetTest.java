@@ -9,6 +9,10 @@ import java.util.List;
 
 public class EnumSetTest {
 
+    enum Color {
+        RED, YELLOW, GREEN, BLUE, BLACK, WHITE
+    }
+
     @Test
     public void shouldBeRemoved() {
         int expectedSizeOfColors = 5;
@@ -40,18 +44,18 @@ public class EnumSetTest {
         //  to exclude the elements passed as parameters
         EnumSet<Color> excludeColors = EnumSet.complementOf(EnumSet.of(Color.BLACK, Color.WHITE));
         System.out.println();
-        excludeColors.forEach(color -> System.out.println(color));
+        excludeColors.forEach(System.out::println);
 
         // we can create an EnumSet by copying all the elements from another EnumSet
         EnumSet<Color> copyColors = EnumSet.copyOf(EnumSet.of(Color.BLACK, Color.WHITE));
         System.out.println();
-        copyColors.forEach(color -> System.out.println(color));
+        copyColors.forEach(System.out::println);
         // or
         List<Color> colorsList = new ArrayList<>();
         colorsList.add(Color.RED);
         EnumSet<Color> listCopy = EnumSet.copyOf(colorsList);
         System.out.println();
-        listCopy.forEach(color -> System.out.println(color));
+        listCopy.forEach(System.out::println);
         // or
         listCopy.forEach(System.out::println);
 
