@@ -12,7 +12,7 @@ public class LazyVar<T> implements Supplier<T> {
 	}
 
 	public static <T> LazyVar<T> let(Supplier<T> supplier) {
-		return new LazyVar<T>(supplier);
+		return new LazyVar<>(supplier);
 	}
 
 	@Override
@@ -21,6 +21,6 @@ public class LazyVar<T> implements Supplier<T> {
 			return value;
 		}
 		supplied = true;
-		return value = (T) supplier.get();
+		return value = supplier.get();
 	}
 }
