@@ -2,10 +2,7 @@ package com.dmslob.collections;
 
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -141,5 +138,32 @@ public class HashMapTest {
     Double callExpensiveMethodToFindValue(String val) {
         System.out.println("invoked..." + val);
         return 23.54;
+    }
+
+    @Test
+    public void should_get_sub_map() {
+        // given
+        Map<String, String> capitals = new HashMap<>();
+        capitals.put("svk", "Bratislava");
+        capitals.put("ger", "Berlin");
+        capitals.put("hun", "Budapest");
+        capitals.put("czk", "Prague");
+        capitals.put("pol", "Warsaw");
+        capitals.put("ita", "Rome");
+        // when | then
+        var keys = List.of("hun", "pol");
+        Map<String, String> subMap = capitals.entrySet().stream()
+                //.skip(4)
+                .filter(x -> keys.contains(x.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        // then
+        assertThat(subMap.containsKey("hun")).isTrue();
+        assertThat(subMap.containsKey("pol")).isTrue();
+        // or
+        subMap = new HashMap<>(capitals);
+        subMap.keySet().retainAll(keys);
+        // then
+        assertThat(subMap.containsKey("hun")).isTrue();
+        assertThat(subMap.containsKey("pol")).isTrue();
     }
 }
