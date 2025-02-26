@@ -1,10 +1,8 @@
-package com.dmslob.algorithms;
+package com.dmslob.problems;
 
-import com.dmslob.algorithms.Snippets;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 

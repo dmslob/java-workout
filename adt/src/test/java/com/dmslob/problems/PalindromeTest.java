@@ -1,4 +1,4 @@
-package com.dmslob.algorithms;
+package com.dmslob.problems;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

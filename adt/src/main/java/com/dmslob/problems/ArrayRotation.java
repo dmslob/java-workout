@@ -1,4 +1,4 @@
-package com.dmslob.algorithms;
+package com.dmslob.problems;
 
 public class ArrayRotation {
 
