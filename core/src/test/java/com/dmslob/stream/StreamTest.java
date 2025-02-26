@@ -144,13 +144,40 @@ public class StreamTest {
 //                .collect(Collectors.groupingBy(Label::getName, Collectors.counting()));
     }
 
-    record Dev(Long id, String name) {
+    record Dev(Long id, String name) {}
+    record Task(Long id, String title) {}
+    record Assignment(Long devId, Long taskId) {}
+    
+    private Map<String, List<String>> mapDevToTaskTitles(
+            List<Dev> devs,
+            List<Task> tasks,
+            List<Assignment> assignments) {
+        return devs.stream()
+                .collect(Collectors.toMap(Dev::name, dev ->
+                        assignments.stream()
+                                .filter(assignment -> assignment.devId.equals(dev.id))
+                                .map(Assignment::taskId)
+                                .flatMap(taskId -> tasks.stream()
+                                        .filter(task -> taskId.equals(task.id))
+                                        .map(Task::title))
+                                .toList()
+                ));
     }
 
-    record Task(Long id, String title) {
-    }
-
-    record Assignment(Long devId, Long taskId) {
+    private Map<String, List<String>> groupTasksByDevs(
+            List<Dev> devs,
+            List<Task> tasks,
+            List<Assignment> assignments) {
+        return devs.stream()
+                .collect(Collectors.groupingBy(Dev::name,
+                        Collectors.flatMapping(dev -> assignments.stream()
+                                        .filter(assignment -> assignment.devId.equals(dev.id))
+                                        .map(Assignment::taskId)
+                                        .flatMap(taskId -> tasks.stream()
+                                                .filter(task -> taskId.equals(task.id))
+                                                .map(Task::title)),
+                                toList())
+                ));
     }
 
     @Test
@@ -184,40 +211,6 @@ public class StreamTest {
         actualResult = groupTasksByDevs(devs, tasks, assignments);
         // then
         assertThat(actualResult).isEqualTo(expectedResult);
-    }
-
-    // Map<Dev::name, List.of(Task::title)>
-    private Map<String, List<String>> mapDevToTaskTitles(
-            List<Dev> devs,
-            List<Task> tasks,
-            List<Assignment> assignments) {
-        return devs.stream()
-                .collect(Collectors.toMap(Dev::name, dev ->
-                        assignments.stream()
-                                .filter(assignment -> assignment.devId.equals(dev.id))
-                                .map(Assignment::taskId)
-                                .flatMap(taskId -> tasks.stream()
-                                        .filter(task -> taskId.equals(task.id))
-                                        .map(Task::title))
-                                .toList()
-                ));
-    }
-
-    // Map<Dev::name, List.of(Task::title)>
-    private Map<String, List<String>> groupTasksByDevs(
-            List<Dev> devs,
-            List<Task> tasks,
-            List<Assignment> assignments) {
-        return devs.stream()
-                .collect(Collectors.groupingBy(Dev::name,
-                        Collectors.flatMapping(dev -> assignments.stream()
-                                        .filter(assignment -> assignment.devId.equals(dev.id))
-                                        .map(Assignment::taskId)
-                                        .flatMap(taskId -> tasks.stream()
-                                                .filter(task -> taskId.equals(task.id))
-                                                .map(Task::title)),
-                                toList())
-                ));
     }
 
     record User(Long id, List<String> interests) {
