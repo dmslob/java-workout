@@ -1,10 +1,8 @@
-package com.dmslob.algorithms;
+package com.dmslob.problems;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.testng.annotations.Test;
-
-import java.util.Arrays;
 
 public class MatrixHelperTest {
 
