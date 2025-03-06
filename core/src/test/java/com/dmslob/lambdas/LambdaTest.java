@@ -20,28 +20,8 @@ public class LambdaTest {
 	}
 
 	// example of closure
-    private Function<Integer, Integer> counter() {
+    Function<Integer, Integer> counter() {
         var atomic = new AtomicInteger(0);
         return atomic::addAndGet;
     }
 }
-
-class B extends A implements C {
-    public void test() {
-
-        foo();
-    }
-}
-
-abstract class A {
-    protected static final String provider = "apple pay";
-
-    protected void foo() {
-        System.out.println("foo()");
-    }
-}
-
-interface C {
-    void test();
-}
-
