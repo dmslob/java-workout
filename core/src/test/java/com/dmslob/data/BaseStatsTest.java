@@ -5,8 +5,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.SynchronizedDescriptiveStatistics;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import java.util.OptionalDouble;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -135,7 +134,7 @@ public class BaseStatsTest {
     double mode(double[] doubles) {
         int modeCount = 0;
         double mode = 0;
-        int tempCnt = 0;
+        int tempCnt;
         for (double i : doubles) {
             tempCnt = 0;
             for (double j : doubles) {
@@ -152,6 +151,30 @@ public class BaseStatsTest {
         return mode;
     }
 
+    List<Double> findMode(double[] testData) {
+        List<Double> modes = new ArrayList<>();
+        HashMap<Double, Integer> modeMap = new HashMap<>();
+        int maxMode = 0;
+        for (double value : testData) {
+            int modeCnt;
+            if (modeMap.containsKey(value)) {
+                modeCnt = modeMap.get(value) + 1;
+            } else {
+                modeCnt = 1;
+            }
+            modeMap.put(value, modeCnt);
+            if (modeCnt > maxMode) {
+                maxMode = modeCnt;
+            }
+        }
+        for (Map.Entry<Double, Integer> multiModes : modeMap.entrySet()) {
+            if (multiModes.getValue() == maxMode) {
+                modes.add(multiModes.getKey());
+            }
+        }
+        return modes;
+    }
+
     @Test
     public void should_find_mode() {
         // given
@@ -161,5 +184,9 @@ public class BaseStatsTest {
         double mode = mode(doubles);
         // then
         assertThat(mode).isEqualTo(expected);
+        // or
+        var modes = findMode(doubles);
+        // then
+        assertThat(modes).isEqualTo(List.of(expected));
     }
 }

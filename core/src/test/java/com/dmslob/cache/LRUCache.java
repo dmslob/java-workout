@@ -2,13 +2,14 @@ package com.dmslob.cache;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * LRU (Last recently used) cache
  */
 public class LRUCache<K, V> {
     private final int capacity;
-    private final Map<K, Node<K, V>> storage = new HashMap<>();
+    private final Map<K, Node<K, V>> storage = new ConcurrentHashMap<>();
 
     private Node<K, V> head = null;
     private Node<K, V> tail = null;
@@ -81,10 +82,9 @@ public class LRUCache<K, V> {
         }
     }
 
-    private static class Node<K, V> {
+    static class Node<K, V> {
         K key;
         V value;
-
         Node<K, V> prev;
         Node<K, V> next;
 

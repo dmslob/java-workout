@@ -1,12 +1,12 @@
 package com.dmslob.collections;
 
-import com.dmslob.collections.stream.tasks.TweeterTagsService;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -31,38 +31,33 @@ public class CollectionsTest {
     }
 
     @Test
-    public void invarianceTest() {
-        //given
+    public void invariance_test() {
+        // given
         List<Integer> integers = Arrays.asList(1, 2, 3);
         // List<Number> numbers = integers; // compile error
-
+        // when
         List<? extends Number> numbers = integers;
         Number firstElement = numbers.get(0);
-
+        // then
         Integer expectedValue = 1;
         assert firstElement.equals(expectedValue);
         //numbers.set(0, 4L); // compile error
     }
 
-    @Test
-    public void should_copy_list_ref() {
-        List<String> strings = new ArrayList<>();
-        strings.add("1");
-        strings.add("2");
-        List<String> unmodifiable = Collections.unmodifiableList(strings);
-        strings.add("3");
+    Set<String> findAndSortTagsByFrequency(List<String> tweets) {
+        final Map<String, Long> tweetToCountMap = tweets.stream()
+                .flatMap(lineWithTweets -> Arrays.stream(lineWithTweets.split(" ")))
+                .filter(tweet -> tweet.matches("#\\w+"))
+                //.filter(tweet -> tweet.startsWith("#"))
+                .collect(Collectors.groupingBy(tweet -> tweet, Collectors.counting()));
 
-        System.out.println(strings);
-        System.out.println(unmodifiable);
-    }
+        final Map<String, Long> sortedByCount = tweetToCountMap.entrySet()
+                .stream()
+                .sorted((Map.Entry.<String, Long> comparingByValue().reversed()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (e1, e2) -> e1, LinkedHashMap::new));
 
-    @Test
-    public void should_find_item_by_binarySearch() {
-        // when
-        int index = Collections.binarySearch(topics, "quiz");
-        // then
-        assertThat(index).isPositive();
-        assertThat(index).isEqualTo(2);
+        return sortedByCount.keySet();
     }
 
     @Test
@@ -72,12 +67,8 @@ public class CollectionsTest {
         tweets.add("#Java and #Scala and #Scala and #Scala");
         tweets.add("#Java and #Kotlin and #Groovy");
         tweets.add("#Java and #Scala and #Kotlin");
-
-        TweeterTagsService tagsService = new TweeterTagsService();
-
         // when
-        String actualResult = tagsService.findAndSortTagsByFrequency(tweets).toString();
-
+        String actualResult = findAndSortTagsByFrequency(tweets).toString();
         // then
         Assert.assertEquals("[#Scala, #Java, #Kotlin, #Groovy]", actualResult);
     }

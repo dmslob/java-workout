@@ -165,5 +165,6 @@ public class HashMapTest {
         // then
         assertThat(subMap.containsKey("hun")).isTrue();
         assertThat(subMap.containsKey("pol")).isTrue();
+        assertThat(subMap.size()).isEqualTo(2);
     }
 }

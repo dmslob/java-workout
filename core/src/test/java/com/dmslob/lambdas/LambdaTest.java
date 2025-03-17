@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LambdaTest {
 
 	@Test
-	public void should_increment_initial_value() {
+	public void should_increment_value() {
 		// given
 		var counter = counter();
 		// when | then
@@ -21,7 +21,7 @@ public class LambdaTest {
 
 	// example of closure
     Function<Integer, Integer> counter() {
-        var atomic = new AtomicInteger(0);
-        return atomic::addAndGet;
+        var counter = new AtomicInteger(0);
+        return counter::addAndGet;
     }
 }

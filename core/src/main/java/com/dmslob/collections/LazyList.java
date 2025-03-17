@@ -2,11 +2,11 @@ package com.dmslob.collections;
 
 import java.util.function.Supplier;
 
-public class LazyList<T> implements MyList<T> {
+public class LazyList<T> {
 	final T head;
-	final Supplier<MyList<T>> tail;
+	final Supplier<T> tail;
 
-	public LazyList(T head, Supplier<MyList<T>> tail) {
+	public LazyList(T head, Supplier<T> tail) {
 		this.head = head;
 		this.tail = tail;
 	}
@@ -15,7 +15,7 @@ public class LazyList<T> implements MyList<T> {
 		return head;
 	}
 
-	public MyList<T> tail() {
+	public T tail() {
 		return tail.get();
 	}
 
