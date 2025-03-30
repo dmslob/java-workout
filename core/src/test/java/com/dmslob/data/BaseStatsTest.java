@@ -3,11 +3,14 @@ package com.dmslob.data;
 import com.google.common.math.Stats;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.SynchronizedDescriptiveStatistics;
+import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.testng.annotations.Test;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.in;
 
 public class BaseStatsTest {
 
@@ -188,5 +191,31 @@ public class BaseStatsTest {
         var modes = findMode(doubles);
         // then
         assertThat(modes).isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void should_predict_values() {
+        // given
+        double[][] input = {
+                {1950, 8639369}, {1960, 9118700},
+                {1970, 9637800}, {1980, 9846800}, {1990, 9969310},
+                {2000, 10263618}
+        };
+        // when
+        var regression = new SimpleRegression();
+        regression.addData(input);
+        // then
+        double[] predictionYears = {1950, 1960, 1970, 1980, 1990, 2000,
+                2010, 2020, 2030, 2040};
+        var yearFormat = NumberFormat.getNumberInstance();
+        yearFormat.setMaximumFractionDigits(0);
+        yearFormat.setGroupingUsed(false);
+        var populationFormat = NumberFormat.getNumberInstance();
+        populationFormat.setMaximumFractionDigits(0);
+
+        for (double predictionYear : predictionYears) {
+            System.out.println(yearFormat.format(predictionYear) + "-"
+                    + populationFormat.format(regression.predict(predictionYear)));
+        }
     }
 }

@@ -4,9 +4,9 @@ public final class ThreeBooleans {
     private ThreeBooleans() {
     }
 
-    public static boolean xOrMoreAreTrueByLoop(boolean[] booleans, int x) {
+    public static boolean xOrMoreAreTrueByLoop(boolean[] bools, int x) {
         int count = 0;
-        for (boolean i : booleans) {
+        for (boolean i : bools) {
             count += i ? 1 : 0;
             if (count >= x) {
                 return true;

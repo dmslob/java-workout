@@ -1,4 +1,4 @@
-package com.dmslob.oop.diamondproblem;
+package com.dmslob.diamondproblem;
 
 public class Main {
     public static void main(String[] args) {
@@ -35,11 +35,10 @@ class BaseClass {
 }
 
 interface BaseInterface {
-    default public void foo() {
+    default void foo() {
         System.out.println("BaseInterface's foo");
     }
 }
 
 class SubClass extends BaseClass implements BaseInterface {
-
 }
