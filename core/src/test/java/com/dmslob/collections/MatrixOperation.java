@@ -1,4 +1,4 @@
-package com.dmslob.collections.arrays;
+package com.dmslob.collections;
 
 import java.util.Arrays;
 

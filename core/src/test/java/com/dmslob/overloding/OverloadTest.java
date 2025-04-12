@@ -17,12 +17,12 @@ public class OverloadTest {
         assertThat(result).isEqualTo(expectedResult);
     }
 
-    private static class ConfusingType {
-        public String getType(Object o) {
+    static class ConfusingType {
+        String getType(Object o) {
             return "Object";
         }
 
-        public String getType(double[] doubles) {
+        String getType(double[] doubles) {
             return "double array";
         }
     }

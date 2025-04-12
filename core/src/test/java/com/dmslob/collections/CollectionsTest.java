@@ -111,19 +111,6 @@ public class CollectionsTest {
     }
 
     @Test
-    public void should_reverse_list_by_reverse_from_java() {
-        // given
-        List<String> expectedList = new LinkedList<>(List.of("3", "2", "1"));
-        List<String> strings = new LinkedList<>(List.of("1", "2", "3"));
-
-        // when
-        Collections.reverse(strings);
-
-        // then
-        assertThat(strings).isEqualTo(expectedList);
-    }
-
-    @Test
     public void should_reverse_list() {
         // given
         List<String> expectedList = new LinkedList<>(List.of("3", "2", "1"));

@@ -5,24 +5,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ArraySnippet {
+public class ArraysUtil {
 
     /**
-     * Generic 2 array concatenation
+     * Concatenate 2 arrays
      * @return concatenated array
      */
-    public static <T> T[] arrayConcat(T[] first, T[] second) {
+    public static <T> T[] concat(T[] first, T[] second) {
         T[] result = Arrays.copyOf(first, first.length + second.length);
         System.arraycopy(second, 0, result, first.length, second.length);
         return result;
     }
 
-    public static void reverse(int[] array) {
-        for (int i = 0; i < array.length / 2; i++) {
-            int temp = array[i];
-            array[i] = array[array.length - i - 1];
-            array[array.length - i - 1] = temp;
+    /**
+     * Reverse array
+     *
+     * @param nums - array to reverse
+     * @return concatenated array
+     */
+    public static int[] reverse(int[] nums) {
+        for (int i = 0; i < nums.length / 2; i++) {
+            int temp = nums[i];
+            nums[i] = nums[nums.length - i - 1];
+            nums[nums.length - i - 1] = temp;
         }
+        return nums;
     }
 
     /**
