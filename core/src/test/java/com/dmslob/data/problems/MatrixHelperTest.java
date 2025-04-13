@@ -52,4 +52,22 @@ public class MatrixHelperTest {
 		}
 		return matrix;
 	}
+
+	@Test
+	public void should_transpose_matrix() {
+		// given
+		int[][] raggedMatrix = {
+				{1, 2, 3},
+				{4, 5},
+				{6}
+		};
+		// when
+		int[][] transposed = MatrixHelper.transposeMatrix(raggedMatrix);
+		MatrixHelper.printMatrix(transposed);
+		// then
+		// Output:
+		// 1 4 6
+		// 2 5 0
+		// 3 0 0
+	}
 }

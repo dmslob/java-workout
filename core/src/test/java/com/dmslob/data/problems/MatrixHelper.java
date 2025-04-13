@@ -72,18 +72,4 @@ public class MatrixHelper {
             System.out.println();
         }
     }
-
-    public static void main(String[] args) {
-        int[][] raggedMatrix = {
-                {1, 2, 3},
-                {4, 5},
-                {6}
-        };
-        int[][] transposed = transposeMatrix(raggedMatrix);
-        printMatrix(transposed);
-        // Output:
-        // 1 4 6
-        // 2 5 0
-        // 3 0 0
-    }
 }
