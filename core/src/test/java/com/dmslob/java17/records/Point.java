@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
  * - Can declare static methods, fields, and initializers.
  * - Can declare instance methods.
  * - Can implement interfaces
+ * - You cannot inherit from a record because it is implicitly final (and cannot be abstract).
+ * - In addition, a record cannot be inherited from another class. However, a record can implement an interface
  * - Can declare nested types, including nested record classes
  * - Record class, and the components in its header, may be decorated with annotations.
  * Any annotations on the record components are propagated to the automatically derived fields,
@@ -72,7 +74,7 @@ public record Point(int x, int y) {
 
     }
 
-    private static record Type() implements AutoCloseable {
+    private record Type() implements AutoCloseable {
         @Override
         public void close() {
 

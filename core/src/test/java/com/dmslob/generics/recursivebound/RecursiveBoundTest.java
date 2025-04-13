@@ -1,5 +1,6 @@
 package com.dmslob.generics.recursivebound;
 
+import lombok.Getter;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -61,24 +62,14 @@ public class RecursiveBoundTest {
         // compile error: Required type Apple, provided Orange
         // apple1.compareTo(orange1);
     }
-
-    @Test
-    public void should_create_city() {
-        City laCity = new City()
-                .setName("LA")
-                .setSquare(100);
-    }
 }
 
+@Getter
 class Fruit<T extends Fruit<T>> implements Comparable<T> {
     private final Integer size;
 
     public Fruit(Integer size) {
         this.size = size;
-    }
-
-    public Integer getSize() {
-        return size;
     }
 
     /**
@@ -98,40 +89,8 @@ class Apple extends Fruit<Apple> {
     }
 }
 
-// Caveat
-class Plum extends Fruit<Apple> {
-    public Plum(Integer size) {
-        super(size);
-    }
-}
-
 class Orange extends Fruit<Orange> {
     public Orange(Integer size) {
         super(size);
-    }
-}
-
-abstract class Node<T extends Node<T>> {
-    String name;
-
-    public T setName(String name) {
-        this.name = name;
-        return self();
-    }
-
-    protected abstract T self();
-}
-
-class City extends Node<City> {
-    private int square;
-
-    City setSquare(int square) {
-        this.square = square;
-        return self();
-    }
-
-    @Override
-    protected City self() {
-        return this;
     }
 }

@@ -1,9 +1,6 @@
 package com.dmslob.generics.exceptions;
 
-import java.util.List;
-
 public class GenericExceptionTest {
-
 }
 
 // compile error
@@ -13,36 +10,16 @@ public class GenericExceptionTest {
 class GenericClassWithInnerClass<T> {
 	// compile error
 	// may not to extend java.lang.Throwable
-	// private class MyInnerException extends Exception {}
+	//private class MyInnerException extends Exception {}
 
 	// OK
 	private static class MyInnerException extends Exception {
 	}
 }
 
-abstract class Seq<E> implements List<E> {
-	// compile error
-	// Illegal generic type for instanceof
-	// static <T> boolean isSeq(List<T> list) {
-	//		return list instanceof Seq<T>;
-	// }
-
-	// compile error
-	// static <E> boolean isElement(E o) {
-	//		return o instanceof E;
-	// }
-
-	static <E> boolean isSeq(E o) {
-		return o instanceof Seq; // OK
-	}
-
-	static <E> boolean isSeqArray(E x) {
-		return x instanceof Seq[]; // OK
-	}
-}
-
 abstract class Processor<T extends Throwable> {
 	abstract void process() throws T; // OK
+	private T t; // OK
 
 	// OK
 	public <T extends Exception> void throwIt(T t) throws T {
@@ -68,8 +45,6 @@ abstract class Processor<T extends Throwable> {
 	//		}
 	//	}
 
-	private T t; // OK
-
 	// compile error
 	// Cannot be referenced from a static context
 	//private static T t1;
@@ -79,7 +54,7 @@ abstract class Processor<T extends Throwable> {
 	}
 
 	// Cannot be referenced from the static context
-	//	static void doThrow(T except) throws T {
-	//		throw except;
+	//	static void doThrow(T ex) throws T {
+	//		throw ex;
 	//	}
 }

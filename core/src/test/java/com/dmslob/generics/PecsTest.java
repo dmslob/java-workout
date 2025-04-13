@@ -1,5 +1,6 @@
 package com.dmslob.generics;
 
+import lombok.Getter;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -89,15 +90,12 @@ public class PecsTest {
     }
 }
 
+@Getter
 class Fruit {
     private final int weight;
 
     public Fruit(int weight) {
         this.weight = weight;
-    }
-
-    public int getWeight() {
-        return weight;
     }
 
     @Override

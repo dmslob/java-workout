@@ -3,7 +3,10 @@ package com.dmslob.generics;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class HeapPollutionTest {
     @Test
@@ -49,5 +52,34 @@ public class HeapPollutionTest {
         objects[0] = temp;
         String firstEle = stringList[0].get(0);
         System.out.println(firstEle);
+    }
+
+    @Test
+    public void should_get_ClassCastException() {
+        // given
+        List<String> stringListA = new ArrayList<>();
+        List<String> stringListB = new ArrayList<>();
+        // when | then
+        CollectionBuilder.addToList(stringListA, "Seven", "Eight", "Nine");
+        CollectionBuilder.addToList(stringListB, "Ten", "Eleven", "Twelve");
+        List<List<String>> listOfStringLists = new ArrayList<>();
+
+        assertThatThrownBy(() -> {
+            CollectionBuilder.faultyMethod(Arrays.asList("Hello!"), Arrays.asList("World!"));
+        }).isInstanceOf(ClassCastException.class);
+    }
+}
+
+class CollectionBuilder {
+    public static <T> void addToList(List<T> listArg, T... elements) {
+        for (T x : elements) {
+            listArg.add(x);
+        }
+    }
+
+    public static void faultyMethod(List<String>... stringParams) {
+        Object[] objectArray = stringParams;     // Valid
+        objectArray[0] = Arrays.asList(42);
+        String s = stringParams[0].get(0);       // ClassCastException thrown here
     }
 }
