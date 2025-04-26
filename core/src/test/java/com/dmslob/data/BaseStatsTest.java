@@ -10,7 +10,6 @@ import java.text.NumberFormat;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.in;
 
 public class BaseStatsTest {
 
@@ -20,11 +19,14 @@ public class BaseStatsTest {
      * general trend for a set of numbers. It can also be used to fill in missing data elements.
      */
     double mean(double[] doubles) {
-        double total = 0;
-        for (double element : doubles) {
-            total += element;
+        if (Objects.nonNull(doubles) && doubles.length > 0) {
+            double total = 0;
+            for (double element : doubles) {
+                total += element;
+            }
+            return total / doubles.length;
         }
-        return total / doubles.length;
+        return 0.0d;
     }
 
     @Test

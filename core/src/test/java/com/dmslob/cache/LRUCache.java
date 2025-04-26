@@ -62,11 +62,11 @@ public class LRUCache<K, V> {
 
     public void set(K key, V value) {
         if (storage.containsKey(key)) {
-            // update the old value
-            Node<K, V> old = storage.get(key);
-            old.value = value;
-            delete(old);
-            setHead(old);
+            // update value
+            Node<K, V> current = storage.get(key);
+            current.value = value;
+            delete(current);
+            setHead(current);
         } else {
             Node<K, V> newNode = new Node<>(key, value);
             if (storage.size() >= capacity) {

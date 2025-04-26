@@ -13,10 +13,8 @@ public class LRUCacheTest {
         lruCache.set("Bob", 23);
         lruCache.set("Jack", 24);
         lruCache.set("Anna", 34);
-
         // when
         lruCache.get("Bob");
-
         // then
         assertThat(lruCache.getHead())
                 .isEqualTo(23);
