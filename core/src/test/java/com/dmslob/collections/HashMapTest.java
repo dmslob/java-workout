@@ -107,7 +107,7 @@ public class HashMapTest {
     }
 
     @Test
-    public void should_calculate_value_even_if_key_is_present_when_call_getOrDefault() {
+    public void should_call_method_even_if_key_is_present_when_call_getOrDefault() {
         // given
         Map<String, Double> itemToPrice = new HashMap<>();
         itemToPrice.put("Rice", 6.9);
