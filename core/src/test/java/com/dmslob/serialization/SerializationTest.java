@@ -1,15 +1,15 @@
 package com.dmslob.serialization;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import org.testng.annotations.Test;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class SerializationTest {
@@ -67,19 +68,33 @@ public class SerializationTest {
 		assertNull(testUser2.getUser());
 	}
 
+	@Test
+	public void should_throw_NotSerializableException_when_not_serializable() throws IOException {
+		// given
+		var card = new Card(1L, "Card");
+		var testCard = new TestCard(card);
+		// when
+		var fileOutputStream = new FileOutputStream("test_card.txt");
+		var objectOutputStream = new ObjectOutputStream(fileOutputStream);
+		// then
+		assertThatThrownBy(() -> objectOutputStream.writeObject(testCard))
+				.isInstanceOf(NotSerializableException.class);
+	}
+
 	record User(String name, Integer age) implements Serializable {}
+	record Card(Long id, String name) {}
 
 	@Getter
+	@AllArgsConstructor
 	static class TestUser implements Serializable {
 		private final String testId;
 		private final String testName;
 		private final transient User user;
+	}
 
-		public TestUser(String testId, String testName, User user) {
-			this.testId = testId;
-			this.testName = testName;
-			this.user = user;
-		}
-
+	@Getter
+	@AllArgsConstructor
+	static class TestCard implements Serializable {
+		private Card card;
 	}
 }
