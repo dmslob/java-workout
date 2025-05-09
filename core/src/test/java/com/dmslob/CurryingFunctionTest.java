@@ -21,12 +21,10 @@ public class CurryingFunctionTest {
         Integer a = 2, b = 3;
         Integer expected = 5;
         Function<Integer, Function<Integer, Integer>> curryAdder = u -> v -> u + v;
-
         // When
         Integer actual = curryAdder
                 .apply(a)
                 .apply(b);
-
         // Then
         log.info("{} + {} = {}", a, b, actual);
         Assert.assertEquals(expected, actual);

@@ -4,18 +4,33 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class LinkedListCycleTest {
 
-    public static class Node {
+    @Getter
+    static class Node {
         private final int data;
+        @Setter
         private Node next;
+
         public Node(int data, Node next) {
             this.data = data;
             this.next = next;
         }
-        public void setNext(Node next) {
-            this.next = next;
+    }
+
+    boolean hasCycle(Node head) {
+        if (head == null) return false;
+        var slow = head;
+        var fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) return true;
         }
+        return false;
     }
 
     @Test
@@ -45,17 +60,5 @@ public class LinkedListCycleTest {
         var result = hasCycle(first);
         // then
         assertThat(result).isTrue();
-    }
-
-    public boolean hasCycle(Node head) {
-        if (head == null) return false;
-        var slow = head;
-        var fast = head;
-        while (fast.next != null && fast.next.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if (fast == slow) return true;
-        }
-        return false;
     }
 }
