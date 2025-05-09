@@ -27,6 +27,7 @@ public class FinallyBlockTest {
 		}
 		finally {
 			result = "finally";
+			System.out.println(result);
 		}
 	}
 
@@ -72,7 +73,7 @@ public class FinallyBlockTest {
 		assertThat(result).isZero();
 	}
 
-	//@Test
+	@Test
 	public void should_not_invoke_statement_in_finally_if_exception() {
 		int a = 20, b = 0;
 		int result;

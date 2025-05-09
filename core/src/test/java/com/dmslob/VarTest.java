@@ -13,18 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VarTest {
 
     @Test
-    public void should_work_with_loop() {
-        Integer.bitCount(1);
-        for (var s : Spiciness.values()) {
-            log.info("{}", s);
-        }
-    }
-
-    @Test
     public void should_create_object_with_var() {
         // given
         String userName = "Arny";
-        // Object user = new Object() will not compile,
+        //Object user = new Object(); //will not compile,
         // because Object does not have getName method
         var user = new Object() {
             private String name;
@@ -37,10 +29,8 @@ public class VarTest {
                 return name;
             }
         };
-
         // when
         user.setName(userName);
-
         // then
         assertThat(user.getClass()).isEqualTo(Object.class);
         assertThat(user.getName()).isEqualTo(userName);
@@ -66,12 +56,9 @@ public class VarTest {
         // when
         user.getClass().getMethod("setName", String.class).invoke(user, userName);
         // then
-        assertThat(user.getClass().getMethod("getName").invoke(user)).isEqualTo(userName);
-    }
-
-
-    enum Spiciness {
-        NOT, MILD, MEDIUM, HOT, FLAMING
+        assertThat(user.getClass()
+                .getMethod("getName").invoke(user))
+                .isEqualTo(userName);
     }
 }
 
@@ -82,7 +69,6 @@ class TypeInference {
     void method() {
         // Explicit type:
         String hello1 = "Hello";
-
         // Type inference:
         var hello2 = "Hello!";
 
@@ -90,7 +76,6 @@ class TypeInference {
         Plumbus pb1 = new Plumbus();
         var pb2 = new Plumbus();
     }
-
     // Also works for static methods:
     static void staticMethod() {
         var hello = "Hello!";
@@ -100,7 +85,7 @@ class TypeInference {
 
 class NoInference {
     String field1 = "Field initialization";
-    // var field2 = "Can't do this";
+    //var field2 = "Can't do this";
 
     // void method() {
     //   var noInitializer; // No inference data

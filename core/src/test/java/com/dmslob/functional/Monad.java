@@ -20,4 +20,9 @@ public class Monad<T> {
     public <U> Monad<U> map(Function<T, U> func) {
         return flatMap(val -> new Monad<>(func.apply(val)));
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }
