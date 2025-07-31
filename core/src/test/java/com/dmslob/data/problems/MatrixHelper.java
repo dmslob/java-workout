@@ -38,6 +38,11 @@ public class MatrixHelper {
         }
     }
 
+    /*
+        To transpose a matrix means to create a new matrix by swapping the rows and columns of the original matrix.
+        if you have a matrix, its transpose is formed by taking the first row of the original matrix
+        and making it the first column of the new matrix, the second row becomes the second column, and so on
+     */
     static int[][] transposeMatrix(int[][] matrix) {
         if (matrix == null || matrix.length == 0) {
             return new int[0][0];
