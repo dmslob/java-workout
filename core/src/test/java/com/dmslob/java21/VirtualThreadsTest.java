@@ -2,24 +2,18 @@ package com.dmslob.java21;
 
 import org.testng.annotations.Test;
 
-import java.time.Duration;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
+import java.util.concurrent.Future;
 
 public class VirtualThreadsTest {
-    // - The thread-per-request style
-    //
-    // - The stacks of virtual threads are stored in Java's garbage-collected heap as stack chunk objects.
-    // - Virtual threads support thread-local variables (ThreadLocal)
-    // and inheritable thread-local variables (InheritableThreadLocal),
-    // just like platform threads, so they can run existing code that uses thread locals.
-
     @Test
     public void should_test_runnable() throws InterruptedException {
         // given
         System.out.println("Start Virtual thread");
-        Runnable task = () -> {
+
+        Runnable task_1 = () -> {
+            System.out.println("Running task_1");
             System.out.println(STR."Hello from thread! Thread ID: \{
                     Thread.currentThread().threadId()}");
             System.out.println(STR."Thread isDaemon: \{Thread.currentThread().isDaemon()}");
@@ -27,31 +21,40 @@ public class VirtualThreadsTest {
             System.out.println(STR."Thread State: \{Thread.currentThread().getState()}");
             System.out.println(STR."Thread isVirtual: \{Thread.currentThread().isVirtual()}");
             System.out.println(STR."Thread classloader: \{Thread.currentThread().getContextClassLoader().getName()}");
+            System.out.println();
         };
-        Thread virtualThread = Thread.ofVirtual().start(task);
+        Thread virtualThread = Thread.ofVirtual().start(task_1);
         virtualThread.join(); // Wait for the virtual thread to complete
 
+        // Builder
+        Thread.Builder builder = Thread.ofVirtual().name("my-worker");
+        Runnable task_2 = () -> {
+            System.out.println("Running task_2");
+            System.out.println(STR."Thread Name: \{Thread.currentThread().getName()}");
+            System.out.println();
+        };
+        Thread t = builder.start(task_2);
+        t.join();
+
         System.out.println("Start Platform thread");
-        Thread platformThread = Thread.ofPlatform().start(task);
+        Thread platformThread = Thread.ofPlatform().start(task_1);
         platformThread.join(); // Wait for the virtual thread to complete
         System.out.println("Test thread finished.");
-        // when
-        // then
     }
 
     @Test
-    public void should_test_pool() throws InterruptedException {
-        // given
-        try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
-            IntStream.range(0, 10).forEach(i -> {
-                executor.submit(() -> {
-                    System.out.println(Thread.currentThread().getName());
-                    Thread.sleep(Duration.ofSeconds(1));
-                    return i;
-                });
+    public void should_test_newVirtualThreadPerTaskExecutor() throws ExecutionException, InterruptedException {
+        try (var executorService = Executors.newVirtualThreadPerTaskExecutor()) {
+            Future<?> future = executorService.submit(() -> {
+                System.out.println(STR."Thread ID: \{Thread.currentThread().threadId()}");
+                System.out.println(STR."Thread isDaemon: \{Thread.currentThread().isDaemon()}");
+                System.out.println(STR."Thread Name: \{Thread.currentThread().getName()}");
+                System.out.println(STR."Thread State: \{Thread.currentThread().getState()}");
+                System.out.println(STR."Thread isVirtual: \{Thread.currentThread().isVirtual()}");
+                System.out.println(STR."Thread classloader: \{Thread.currentThread().getContextClassLoader().getName()}");
+                System.out.println();
             });
+            future.get(); // Wait for the task to complete
         }
-        // when
-        // then
     }
 }
