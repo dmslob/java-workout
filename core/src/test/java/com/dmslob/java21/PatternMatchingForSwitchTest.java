@@ -223,7 +223,7 @@ public class PatternMatchingForSwitchTest {
             case String s -> System.out.println("String");
             case Color c  -> System.out.println("Color: " + c);
             case Point p  -> System.out.println("Record class: " + p);
-            case int[] ia -> System.out.println("Array of ints of length " + ia.length);
+            case int[] ia -> System.out.println("Array of ints with length " + ia.length);
             default       -> System.out.println("Something else");
         }
     }
@@ -231,7 +231,7 @@ public class PatternMatchingForSwitchTest {
     @Test
     public void should_test() {
         // when
-        //typeTester(new double[] {1, 3});
+        typeTester(new int[] {1, 3});
 
         Integer i = 1;
         switch (i) {

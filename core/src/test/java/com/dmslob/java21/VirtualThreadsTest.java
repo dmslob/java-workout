@@ -23,18 +23,9 @@ public class VirtualThreadsTest {
             System.out.println(STR."Thread classloader: \{Thread.currentThread().getContextClassLoader().getName()}");
             System.out.println();
         };
-        Thread virtualThread = Thread.ofVirtual().start(task_1);
+        Thread virtualThread = Thread.ofVirtual().name("my-worker").start(task_1);
+        //Thread virtualThread = Thread.ofVirtual().start(task_1);
         virtualThread.join(); // Wait for the virtual thread to complete
-
-        // Builder
-        Thread.Builder builder = Thread.ofVirtual().name("my-worker");
-        Runnable task_2 = () -> {
-            System.out.println("Running task_2");
-            System.out.println(STR."Thread Name: \{Thread.currentThread().getName()}");
-            System.out.println();
-        };
-        Thread t = builder.start(task_2);
-        t.join();
 
         System.out.println("Start Platform thread");
         Thread platformThread = Thread.ofPlatform().start(task_1);
