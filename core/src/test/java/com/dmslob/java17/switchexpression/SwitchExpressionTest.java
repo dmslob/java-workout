@@ -3,8 +3,6 @@ package com.dmslob.java17.switchexpression;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.Test;
 
-import java.math.BigDecimal;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j
