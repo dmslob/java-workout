@@ -2,9 +2,11 @@ package com.dmslob.java21;
 
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.IntStream;
 
 public class VirtualThreadsTest {
     @Test
@@ -48,4 +50,23 @@ public class VirtualThreadsTest {
             future.get(); // Wait for the task to complete
         }
     }
+
+    @Test
+    public void should_test() {
+        var threadFactory = Thread.ofVirtual().name("worker-", 1).factory();
+        try (var executorService = Executors.newThreadPerTaskExecutor(threadFactory)) {
+            IntStream.range(0, 20).forEach(i -> {
+                executorService.submit(() -> {
+                    try {
+                        System.out.println(STR."Thread Name: \{Thread.currentThread()}");
+                        System.out.println();
+                        Thread.sleep(Duration.ofMillis(500L));
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            });
+        }
+    }
+
 }
