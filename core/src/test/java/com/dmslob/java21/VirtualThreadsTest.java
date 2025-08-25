@@ -52,16 +52,18 @@ public class VirtualThreadsTest {
     }
 
     @Test
-    public void should_test() {
+    public void should_test_newThreadPerTaskExecutor() {
         var threadFactory = Thread.ofVirtual().name("worker-", 1).factory();
+        //try (var executorService = Executors.newFixedThreadPool(8)) {
+        //try (var executorService = Executors.newCachedThreadPool()) {
         try (var executorService = Executors.newThreadPerTaskExecutor(threadFactory)) {
-            IntStream.range(0, 20).forEach(i -> {
+            IntStream.range(0, 1_000).forEach(i -> {
                 executorService.submit(() -> {
                     try {
                         System.out.println(STR."Thread Name: \{Thread.currentThread()}");
                         System.out.println();
-                        Thread.sleep(Duration.ofMillis(500L));
-                    } catch (InterruptedException e) {
+                        Thread.sleep(Duration.ofMillis(50L));
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 });
