@@ -29,7 +29,7 @@ public class UnnamedPatternAndVariablesTest {
     }
 
     @Test
-    public void should_unnamed_variables_for_statements() {
+    public void should_test_unnamed_variables_for_statements() {
         // Assignment Statements
         var carQueue = new SynchronousQueue<Car>();
         var firstRemoved = removeThreeCarsAndReturnFirstRemoved(carQueue);

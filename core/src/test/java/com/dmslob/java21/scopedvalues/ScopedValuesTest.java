@@ -2,6 +2,10 @@ package com.dmslob.java21.scopedvalues;
 
 import org.testng.annotations.Test;
 
+import java.util.NoSuchElementException;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
 public class ScopedValuesTest {
 
     @Test
@@ -11,7 +15,9 @@ public class ScopedValuesTest {
         // when
         userService.get();
         // and we get java.util.NoSuchElementException
-        userService.test();
+        //userService.test();
+        assertThatThrownBy(() -> userService.test())
+                .isInstanceOf(NoSuchElementException.class);
     }
 
     static class UserService {
