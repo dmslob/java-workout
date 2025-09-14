@@ -51,7 +51,7 @@ public class FactoryMethodTest {
     }
 
     @Test
-    public void should_test() {
+    public void should_test_factory_method() {
         // given
         Logistics roadLogistics = new RoadLogistics();
         // when

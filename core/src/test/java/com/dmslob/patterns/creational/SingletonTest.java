@@ -1,23 +1,18 @@
 package com.dmslob.patterns.creational;
 
 import org.testng.annotations.Test;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class SingletonTest {
 
     static class LazySingleton {
-        static {
-            System.out.println("Lazy Singleton");
-        }
         // Private constructor to prevent external instantiation
         private LazySingleton() {
             // Optional: Add initialization logic here
         }
         // Static inner class to hold the Singleton instance
         private static class SingletonHolder {
-            static {
-                System.out.println("Singleton Holder");
-            }
             // The instance is created only when SingletonHolder is initialized
             private static final LazySingleton INSTANCE = new LazySingleton();
         }
@@ -32,7 +27,7 @@ public class SingletonTest {
     }
 
     @Test
-    public void should_test() {
+    public void should_test_singleton() {
         // given
         var instance1 = LazySingleton.getInstance();
         // when
