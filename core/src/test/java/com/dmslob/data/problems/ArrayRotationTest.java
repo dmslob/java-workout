@@ -3,6 +3,18 @@ package com.dmslob.data.problems;
 import org.testng.annotations.Test;
 
 public class ArrayRotationTest {
+    
+    static void leftRotate(int[] arr, int d, int n) {
+        for (int i = 0; i < d; i++) {
+            int j, temp;
+            temp = arr[0];
+            for (j = 0; j < n - 1; j++) {
+                arr[j] = arr[j + 1];
+            }
+            arr[j] = temp;
+        }
+    }
+
     @Test
     public void should_rotate_array() {
         // given
@@ -12,7 +24,7 @@ public class ArrayRotationTest {
         // when
         // Calling method to rotate array leftwards
         // and later printing the array elements
-        ArrayRotation.leftRotate(arr, 2, arr.length);
+        leftRotate(arr, 2, arr.length);
         // then
         for (int j : arr) System.out.print(j + " ");
     }

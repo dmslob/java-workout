@@ -22,6 +22,14 @@ public class SnippetTest {
         int result = sumReduce(integers, accumulator);
         // then
         assertThat(result).isEqualTo(expectedSum);
+        // or when
+        result = integers.stream().mapToInt(Integer::intValue).sum();
+        // then
+        assertThat(result).isEqualTo(expectedSum);
+        // or when
+        result = integers.stream().reduce(0, Integer::sum);
+        // then
+        assertThat(result).isEqualTo(expectedSum);
     }
 
     /*
