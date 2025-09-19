@@ -30,7 +30,7 @@ public class StringTemplatesTest {
                     "phone":   "%s",
                     "address": "%s"
                 }
-                """.formatted(name, phone, address);
+                """.formatted(name, phone, address);// Java 15
         // when
         var person = gson.fromJson(json, Person.class);
         // then
@@ -55,8 +55,12 @@ public class StringTemplatesTest {
                     "address": "\{address}"
                 }
                 """;
-        // when
+		System.out.println(template.fragments());
+		System.out.println(template.values());
+		System.out.println(template.interpolate());
+		// when
         json = STR.process(template);
+		System.out.println(json);
         person = gson.fromJson(json, Person.class);
         // then
         assertThat(person).isEqualTo(jaanSmith);
@@ -64,15 +68,6 @@ public class StringTemplatesTest {
 
     @Test
     public void should_format_string_by_StringTemplate() {
-        // Test 1.
-        // given
-        String name = "Joan";
-        // when
-        String info = STR."My name is \{name}";
-        // then
-        assertThat(info).isEqualTo("My name is Joan");
-
-        // Test 2.
         // given
         int x = 10, y = 20;
         // when
@@ -80,10 +75,8 @@ public class StringTemplatesTest {
         // then
         assertThat(stringExpression).isEqualTo("10 + 20 = 30");
 
-        // Test 3.
         // when
         String time = STR."The time is \{
-                // The java.time.format package is very useful
                 DateTimeFormatter
                         .ofPattern("HH:mm:ss")
                         .format(LocalTime.of(12, 12, 12))
@@ -132,5 +125,6 @@ public class StringTemplatesTest {
             """;
         // then
         assertThat(table).isEqualTo(expected);
-    }
+		System.out.println(table);
+	}
 }

@@ -229,7 +229,7 @@ public class PatternMatchingForSwitchTest {
     }
 
     @Test
-    public void should_test() {
+    public void should_check_primitive() {
         // when
         typeTester(new int[] {1, 3});
 
