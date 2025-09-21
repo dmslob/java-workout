@@ -3,16 +3,17 @@ package com.dmslob.patterns.behavioral;
 import lombok.Getter;
 import org.testng.annotations.Test;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+/**
+ * Need to restore an object back to its previous state
+ * (e.g. "undo" or "rollback" operations).
+ */
 public class MementoTest {
 
-    /**
-     * Need to restore an object back to its previous state
-     * (e.g. "undo" or "rollback" operations).
-     */
     @Test
     public void should_test_memento() {
         // given
@@ -81,7 +82,7 @@ public class MementoTest {
      * It provides methods to save and retrieve the different states.
      */
     static class TextEditorHistory {
-        private final LinkedList<TextEditorMemento> mementos = new LinkedList<>();
+        private final Deque<TextEditorMemento> mementos = new LinkedList<>();
 
         public void save(TextEditorMemento memento) {
             mementos.push(memento);
