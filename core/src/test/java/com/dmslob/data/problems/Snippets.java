@@ -22,16 +22,12 @@ public class Snippets {
      *
      * @return number
      */
-    public static int findUniqueNumber(int[] inputArray) {
+    public static int findUniqueNumber(int[] nums) {
         int number = 0;
-        for (int i = 0; i < inputArray.length; i++) {
-            number = number ^ inputArray[i];
+        for (int i : nums) {
+            number = number ^ i;
         }
         return number;
-    }
-
-    public static int[] uniqueNumbers(int[] numbers) {
-        return numbers;
     }
 
     public static void main(String[] args) {

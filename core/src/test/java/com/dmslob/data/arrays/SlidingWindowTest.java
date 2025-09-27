@@ -1,4 +1,4 @@
-package com.dmslob.data.sliding;
+package com.dmslob.data.arrays;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

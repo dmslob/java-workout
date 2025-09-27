@@ -1,4 +1,4 @@
-package com.dmslob.data.problems;
+package com.dmslob.data.arrays;
 
 import org.testng.annotations.Test;
 
