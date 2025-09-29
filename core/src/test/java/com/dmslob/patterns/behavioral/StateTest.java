@@ -2,10 +2,10 @@ package com.dmslob.patterns.behavioral;
 
 import org.testng.annotations.Test;
 
+/**
+ * State enables an object to modify its behavior when its internal state changes.
+ */
 public class StateTest {
-    /**
-     * enables an object to modify its behavior when its internal state changes.
-     */
     // State Interface
     interface TVState {
         void pressPowerButton(TV tv);

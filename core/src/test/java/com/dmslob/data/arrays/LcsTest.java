@@ -1,5 +1,6 @@
-package com.dmslob.data.problems.medium;
+package com.dmslob.data.arrays;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.HashSet;
@@ -44,29 +45,20 @@ public class LcsTest {
         return longest;
     }
 
-    @Test
-    public void should_find_lcs() {
-        // given
-        int[] nums1 = {100, 4, 200, 1, 3, 2};
-        int expected = 4;
-        // when
-        int result = findLcs(nums1);
-        // then
-        assertThat(result).isEqualTo(expected);
+    @DataProvider
+    public Object[][] input_dataProvider() {
+        return new Object[][]{
+                // array, expected
+                {new int[]{100, 4, 200, 1, 3, 2}, 4},
+                {new int[]{0, 3, 7, 2, 5, 8, 4, 6, 0, 1}, 9},
+                {new int[]{1, 0, 1, 2}, 3}
+        };
+    }
 
-        // given
-        int[] nums2 = {0, 3, 7, 2, 5, 8, 4, 6, 0, 1};
-        expected = 9;
+    @Test(dataProvider = "input_dataProvider")
+    public void should_find_lcs(int[] nums, int expected) {
         // when
-        result = findLcs(nums2);
-        // then
-        assertThat(result).isEqualTo(expected);
-
-        // given
-        int[] nums3 = {1, 0, 1, 2};
-        expected = 3;
-        // when
-        result = findLcs(nums3);
+        int result = findLcs(nums);
         // then
         assertThat(result).isEqualTo(expected);
     }
