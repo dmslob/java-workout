@@ -55,7 +55,7 @@ public class PecsTest {
         for (Fruit f : fruits) {
             sum = sum + f.getWeight();
         }
-        Fruit fruit = fruits.get(0);
+        Fruit fruit = fruits.getFirst();
         //fruits.add(new Fruit(200));
         //fruits.add(new Apple(200));
         //fruits.add(new AsianApple(150));
@@ -86,7 +86,7 @@ public class PecsTest {
         System.out.println(apples);
 
         //Apple apple = (Apple) apples.get(0);
-        Object o = apples.get(0);
+        Object o = apples.getFirst();
     }
 }
 

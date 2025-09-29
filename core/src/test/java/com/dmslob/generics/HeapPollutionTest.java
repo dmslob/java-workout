@@ -17,7 +17,7 @@ public class HeapPollutionTest {
 
         List<Integer> listOfInteger = (List<Integer>) (Object) listOfString;
         // when
-        Integer firstElement = listOfInteger.get(0);
+        Integer firstElement = listOfInteger.getFirst();
         // then
         // java.lang.ClassCastException: class java.lang.String cannot be cast to class java.lang.Integer
         // (java.lang.String and java.lang.Integer are in module java.base of loader 'bootstrap')
@@ -50,7 +50,7 @@ public class HeapPollutionTest {
         // which is of type List<String>
         // Here ClassCastException will be thrown
         objects[0] = temp;
-        String firstEle = stringList[0].get(0);
+        String firstEle = stringList[0].getFirst();
         System.out.println(firstEle);
     }
 
@@ -80,6 +80,6 @@ class CollectionBuilder {
     public static void faultyMethod(List<String>... stringParams) {
         Object[] objectArray = stringParams;     // Valid
         objectArray[0] = Arrays.asList(42);
-        String s = stringParams[0].get(0);       // ClassCastException thrown here
+        String s = stringParams[0].getFirst();       // ClassCastException thrown here
     }
 }

@@ -40,7 +40,7 @@ public class RawTypesTest {
 
 		// when | then
 		assertThatThrownBy(() -> {
-			String expectedString = strings.get(0); // Compiler-generated cast
+			String expectedString = strings.getFirst(); // Compiler-generated cast
 		})
 				.isInstanceOf(ClassCastException.class)
 				.hasMessageContaining(expectedMessage);

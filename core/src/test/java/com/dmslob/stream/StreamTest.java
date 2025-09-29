@@ -74,7 +74,7 @@ public class StreamTest {
                 .collect(toList());
         // then
         assertThat(sortedPoints).isNotSameAs(points);
-        assertThat(sortedPoints.get(0).x())
+        assertThat(sortedPoints.getFirst().x())
                 .isEqualTo(1);
     }
 

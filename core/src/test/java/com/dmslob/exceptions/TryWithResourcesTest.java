@@ -67,7 +67,7 @@ public class TryWithResourcesTest {
 				.isNotNull()
 				.hasSize(1);
 
-		assertThat(suppressedExceptions.get(0).getMessage())
+		assertThat(suppressedExceptions.getFirst().getMessage())
 				.isEqualTo("Exception inside close()");
 	}
 

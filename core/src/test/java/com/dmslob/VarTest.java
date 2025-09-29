@@ -112,7 +112,7 @@ class GenericTypeInference {
     void pitFall() {
         var apples = new ArrayList<>();
         apples.add(new Apple());
-        Object o = apples.get(0); // Comes back as plain Object
+        Object o = apples.getFirst(); // Comes back as plain Object
         //Apple apple = apples.get(0); // Required type Apple, but provided Object
     }
 }
