@@ -23,11 +23,10 @@ public class SimpleTtlCache<K, V> {
 
     public V get(K key) {
         CacheItem<V> item = cache.get(key);
-        if (item == null) {
-            return null;
-        }
+        if (item == null) return null;
+
         if (item.expiryTime() < System.currentTimeMillis()) {
-            cache.remove(key); // lazy cleanup
+            cache.remove(key);
             return null;
         }
         return item.value();
