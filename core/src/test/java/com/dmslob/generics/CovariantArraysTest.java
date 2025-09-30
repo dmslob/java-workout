@@ -49,6 +49,6 @@ public class CovariantArraysTest {
         // fruitList.add(new Object());
         fruitList.add(null); // Legal but uninteresting
         // We know that it returns at least Fruit:
-        Fruit fruit = fruitList.get(0);
+        Fruit fruit = fruitList.getFirst();
     }
 }

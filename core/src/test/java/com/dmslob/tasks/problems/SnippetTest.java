@@ -42,7 +42,7 @@ public class SnippetTest {
         if (integers.isEmpty()) {
             return accumulator;
         }
-        int first = integers.get(0);
+        int first = integers.getFirst();
         List<Integer> rest = integers
                 .stream()
                 .skip(1)

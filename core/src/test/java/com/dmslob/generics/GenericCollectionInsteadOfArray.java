@@ -36,7 +36,7 @@ public class GenericCollectionInsteadOfArray {
         List<Integer> intList = Arrays.asList(42); // (2)
         Object[] objects = arrayParam; // (3)
         objects[0] = intList; // (4)
-        String s = arrayParam[0].get(0);
+        String s = arrayParam[0].getFirst();
     }
 
     // List-based generic reduction

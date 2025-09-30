@@ -37,7 +37,7 @@ public class CollectionsTest {
         // List<Number> numbers = integers; // compile error
         // when
         List<? extends Number> numbers = integers;
-        Number firstElement = numbers.get(0);
+        Number firstElement = numbers.getFirst();
         // then
         Integer expectedValue = 1;
         assert firstElement.equals(expectedValue);

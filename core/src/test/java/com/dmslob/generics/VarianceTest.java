@@ -9,7 +9,7 @@ public class VarianceTest {
 
     void doInvariance(List<Predator> predators) {
         // Only Predator
-        Predator predator = predators.get(0);
+        Predator predator = predators.getFirst();
     }
 
     @Test
@@ -37,10 +37,10 @@ public class VarianceTest {
     }
 
     void doCovariance(List<? extends Predator> predators) {
-        Object o = predators.get(0);         // Ok
-        Animal animal = predators.get(0);    // Ok
-        Mammal mammal = predators.get(0);    // Ok
-        Predator predator = predators.get(0);
+        Object o = predators.getFirst();         // Ok
+        Animal animal = predators.getFirst();    // Ok
+        Mammal mammal = predators.getFirst();    // Ok
+        Predator predator = predators.getFirst();
         // Compile error
         //Lion lion = predators.get(0);
         //AfricanLion africanLion = predators.get(0);
@@ -70,7 +70,7 @@ public class VarianceTest {
     }
 
     void doContravariance(List<? super Predator> predators) {
-        Object a = predators.get(0);        // Ok
+        Object a = predators.getFirst();        // Ok
         // Compile error
         //Animal animal = predators.get(0);
         //Mammal mammal = predators.get(0);
