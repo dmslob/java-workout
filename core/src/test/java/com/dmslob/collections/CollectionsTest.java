@@ -1,6 +1,7 @@
 package com.dmslob.collections;
 
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -53,7 +54,7 @@ public class CollectionsTest {
 
         final Map<String, Long> sortedByCount = tweetToCountMap.entrySet()
                 .stream()
-                .sorted((Map.Entry.<String, Long> comparingByValue().reversed()))
+                .sorted((Map.Entry.<String, Long>comparingByValue().reversed()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (e1, e2) -> e1, LinkedHashMap::new));
 
@@ -269,5 +270,57 @@ public class CollectionsTest {
             }
         }
         return duplicates;
+    }
+
+    @Test
+    public void should_get_random_from_list() {
+        // given
+        var random = new Random();
+        var numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        // when
+        int n = numbers.get(random.nextInt(numbers.size()));
+        // then
+        System.out.printf("%s", n);
+        assertThat(n <= 10).isTrue();
+    }
+
+    @Test
+    public void should_get_k_random_numbers_from_list() {
+        // given
+        int k = 3;
+        List<Integer> numbers = new ArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+        // when
+        Collections.shuffle(numbers);
+        var randomKNumbers = numbers.subList(0, k);
+        // then
+        assertThat(randomKNumbers.size()).isEqualTo(3);
+        // or
+        List<Integer> randomNumbers = numbers.stream()
+                .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
+                    Collections.shuffle(collected);
+                    return collected.stream().limit(k).toList();
+                }));
+        // then
+        assertThat(randomNumbers.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void should_sort_array_descending_by_stream() {
+        // given
+        var random = new Random();
+        List<Integer> numbers = new ArrayList<>(random
+                .ints(10, 0, 10)
+                .boxed().toList());
+        // when
+        List<Integer> sortedList = numbers
+                .stream()
+                .sorted(Comparator.reverseOrder())
+                .toList();
+        // then
+        assertThat(sortedList.get(0) > sortedList.get(1)).isTrue();
+        // when
+        numbers.sort(Comparator.reverseOrder());
+        // then
+        assertThat(sortedList.get(0) > sortedList.get(1)).isTrue();
     }
 }
