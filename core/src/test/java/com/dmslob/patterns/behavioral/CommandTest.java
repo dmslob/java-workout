@@ -4,6 +4,12 @@ package com.dmslob.patterns.behavioral;
 import lombok.Setter;
 import org.testng.annotations.Test;
 
+/**
+ * The Command design pattern is a behavioral design pattern that encapsulates a request as an object,
+ * thereby decoupling the sender of the request from the object that performs the actual operation (the receiver).
+ * This pattern allows for the parameterization of clients with different requests,
+ * the queuing of requests, the logging of requests, and the support for undoable operations
+ */
 public class CommandTest {
 
     @Test
