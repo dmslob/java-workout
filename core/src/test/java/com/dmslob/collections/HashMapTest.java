@@ -136,7 +136,7 @@ public class HashMapTest {
     }
 
     Double callExpensiveMethodToFindValue(String val) {
-        System.out.println("invoked..." + val);
+        System.out.println(STR."invoked...\{val}");
         return 23.54;
     }
 
@@ -166,5 +166,60 @@ public class HashMapTest {
         assertThat(subMap.containsKey("hun")).isTrue();
         assertThat(subMap.containsKey("pol")).isTrue();
         assertThat(subMap.size()).isEqualTo(2);
+    }
+
+    String fetchAndReturnNew(String key, String oldValue) {
+        return "newValue";
+    }
+
+    String fetchAndReturnNull(String key, String oldValue) {
+        return null;
+    }
+
+    String fetchAndThrowError(String key, String oldValue) {
+        throw new RuntimeException("error");
+    }
+
+    @Test
+    public void should_return_new_value_when_computeIfPresent() {
+        // given
+        var expected = "newValue";
+        Map<String, String> capitalCities = new HashMap<>();
+        capitalCities.put("Norway", "empty");
+        capitalCities.put("Germany", "Berlin");
+        // when
+        String norwayCapital = capitalCities
+                .computeIfPresent("Norway", this::fetchAndReturnNew);
+        // then
+        assertThat(norwayCapital).isEqualTo(expected);
+        assertThat(capitalCities.get("Norway")).isEqualTo(expected);
+    }
+
+    @Test
+    public void should_remove_mapping_when_computeIfPresent() {
+        // given
+        Map<String, String> capitalCities = new HashMap<>();
+        capitalCities.put("Norway", "empty");
+        capitalCities.put("Germany", "Berlin");
+        // when
+        String norwayCapital = capitalCities
+                .computeIfPresent("Norway", this::fetchAndReturnNull);
+        // then
+        assertThat(norwayCapital).isEqualTo(null);
+        assertThat(capitalCities.containsKey("Norway")).isFalse();
+    }
+
+    @Test
+    public void should_do_nothing_when_computeIfPresent() {
+        // given
+        var expected = "empty";
+        Map<String, String> capitalCities = new HashMap<>();
+        capitalCities.put("Norway", "empty");
+        capitalCities.put("Germany", "Berlin");
+        // when | then
+        assertThatThrownBy(() -> capitalCities
+                .computeIfPresent("Norway", this::fetchAndThrowError));
+        assertThat(capitalCities.containsKey("Norway")).isTrue();
+        assertThat(capitalCities.get("Norway")).isEqualTo(expected);
     }
 }
