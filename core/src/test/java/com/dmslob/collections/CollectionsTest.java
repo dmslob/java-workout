@@ -30,6 +30,20 @@ public class CollectionsTest {
         newTopics.add("coder");
     }
 
+	@Test
+	public void should_throw_UnsupportedOperationException_on_add_but_not_on_set() {
+		// given
+		List<String> letters = Arrays.asList("A", "B", "C");
+		// when
+		assertThatThrownBy(() -> letters.add("D"))
+				// then
+				.isInstanceOf(UnsupportedOperationException.class);
+		// when
+		letters.set(0, "X");
+		// then
+		assertThat(letters.getFirst()).isEqualTo("X");
+	}
+
     @Test
     public void invariance_test() {
         // given
