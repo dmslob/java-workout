@@ -222,4 +222,20 @@ public class HashMapTest {
         assertThat(capitalCities.containsKey("Norway")).isTrue();
         assertThat(capitalCities.get("Norway")).isEqualTo(expected);
     }
+
+    @Test
+    public void should_merge_values_for_keys() {
+        // given
+        Map<String, Integer> inventory = new HashMap<>();
+        inventory.put("apple", 10);
+        inventory.put("banana", 5);
+        inventory.put("orange", 8);
+        // when
+        inventory.computeIfPresent("banana", (key, value) -> value - 2);
+        inventory.computeIfAbsent("grape", k -> 7);
+        inventory.merge("apple", 5, Integer::sum);
+        inventory.merge("orange", 3, (oldVal, newVal) -> oldVal * newVal);
+        // then
+        System.out.println(inventory);
+    }
 }
