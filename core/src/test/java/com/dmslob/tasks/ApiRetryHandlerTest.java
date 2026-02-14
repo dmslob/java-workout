@@ -29,20 +29,17 @@ public class ApiRetryHandlerTest {
             } catch (Exception e) {
                 // Handle expected transient errors (e.g., HTTP 429, 500, 503)
                 System.err.println("Attempt failed due to: " + e.getMessage());
-
                 // Don't retry for non-transient errors (e.g., HTTP 400 Bad Request, 401 Unauthorized)
                 // For a real API, you'd check specific error codes here.
-
                 if (attempt == MAX_RETRIES - 1) {
                     throw new RuntimeException("Max retries reached, operation failed permanently", e);
                 }
-
-                // Calculate next delay with jitter and cap
+                // Calculate the next delay with jitter and cap
                 long backoff = (long) (INITIAL_DELAY_MS * Math.pow(MULTIPLIER, attempt));
-                long jitter = (long) (RANDOM.nextDouble() * INITIAL_DELAY_MS); // Add random factor
+                long jitter = (long) (RANDOM.nextDouble() * INITIAL_DELAY_MS); // Add a random factor
                 long delay = Math.min(MAX_DELAY_MS, backoff + jitter);
 
-                System.out.println("Waiting for " + delay + "ms before next attempt.");
+                System.out.println("Waiting for %s ms before next attempt.".formatted(delay));
 
                 try {
                     Thread.sleep(delay);
