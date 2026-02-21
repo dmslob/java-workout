@@ -1,4 +1,4 @@
-package com.dmslob.tasks;
+package com.dmslob.tasks.ratelimiter;
 
 import org.testng.annotations.Test;
 

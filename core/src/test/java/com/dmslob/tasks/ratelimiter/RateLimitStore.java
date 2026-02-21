@@ -1,4 +1,4 @@
-package com.dmslob.tasks;
+package com.dmslob.tasks.ratelimiter;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -17,17 +17,16 @@ public class RateLimitStore {
         if (cache.size() > maxCacheSize) {
             cleanup();
         }
-        ConcurrentLinkedQueue<Long> timestamps =
-                cache.computeIfAbsent(key, k -> new ConcurrentLinkedQueue<>());
-        synchronized (timestamps) {
+        var timestampQueue = cache.computeIfAbsent(key, k -> new ConcurrentLinkedQueue<>());
+        synchronized (timestampQueue) {
             // Remove expired timestamps
-            while (!timestamps.isEmpty() && now - timestamps.peek() > windowMs) {
-                timestamps.poll();
+            while (!timestampQueue.isEmpty() && now - timestampQueue.peek() > windowMs) {
+                timestampQueue.poll();
             }
-            if (timestamps.size() >= maxRequests) {
+            if (timestampQueue.size() >= maxRequests) {
                 return false;
             }
-            timestamps.add(now);
+            timestampQueue.add(now);
             return true;
         }
     }
