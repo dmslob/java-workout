@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.*;
 
 public class RateLimitStoreTest {
 
-    private final RateLimitStore store = new RateLimitStore(100);
+    private final RateLimitStore rateLimitStore = new RateLimitStore(100);
 
     @Test
     public void should_allow_requests_within_limit() {
@@ -18,9 +18,9 @@ public class RateLimitStoreTest {
         var maxRequests = 3;
         var timeWindow = 5000;
         // when
-        boolean first = store.tryAcquire(key, maxRequests, timeWindow);
-        boolean second = store.tryAcquire(key, maxRequests, timeWindow);
-        boolean third = store.tryAcquire(key, maxRequests, timeWindow);
+        boolean first = rateLimitStore.tryAcquire(key, maxRequests, timeWindow);
+        boolean second = rateLimitStore.tryAcquire(key, maxRequests, timeWindow);
+        boolean third = rateLimitStore.tryAcquire(key, maxRequests, timeWindow);
         // then
         assertThat(first).isTrue();
         assertThat(second).isTrue();
@@ -34,9 +34,9 @@ public class RateLimitStoreTest {
         var maxRequests = 2;
         var timeWindow = 5000;
         // when
-        store.tryAcquire(key, maxRequests, timeWindow);
-        store.tryAcquire(key, maxRequests, timeWindow);
-        boolean thirdAttempt = store.tryAcquire(key, maxRequests, timeWindow);
+        rateLimitStore.tryAcquire(key, maxRequests, timeWindow);
+        rateLimitStore.tryAcquire(key, maxRequests, timeWindow);
+        boolean thirdAttempt = rateLimitStore.tryAcquire(key, maxRequests, timeWindow);
         // then
         assertThat(thirdAttempt).isFalse();
     }
@@ -48,13 +48,13 @@ public class RateLimitStoreTest {
         var maxRequests = 1;
         var timeWindow = 200;
         // when
-        store.tryAcquire(key, maxRequests, timeWindow);
-        boolean blocked = store.tryAcquire(key, maxRequests, timeWindow);
+        rateLimitStore.tryAcquire(key, maxRequests, timeWindow);
+        boolean blocked = rateLimitStore.tryAcquire(key, maxRequests, timeWindow);
         // then
         assertThat(blocked).isFalse();
         // when
         Thread.sleep(250);
-        boolean allowedAgain = store.tryAcquire(key, maxRequests, timeWindow);
+        boolean allowedAgain = rateLimitStore.tryAcquire(key, maxRequests, timeWindow);
         // then
         assertThat(allowedAgain).isTrue();
     }
@@ -66,13 +66,14 @@ public class RateLimitStoreTest {
         int maxRequests = 10;
         int threadCount = 50;
         ConcurrentLinkedQueue<Boolean> results;
+        // when
         try (ExecutorService executor = Executors.newFixedThreadPool(threadCount)) {
             var latch = new CountDownLatch(threadCount);
             results = new ConcurrentLinkedQueue<>();
             IntStream.range(0, threadCount).forEach(i ->
                     executor.submit(() -> {
                         // when
-                        boolean result = store.tryAcquire(key, maxRequests, 5000);
+                        boolean result = rateLimitStore.tryAcquire(key, maxRequests, 5000);
                         results.add(result);
                         latch.countDown();
                     })
