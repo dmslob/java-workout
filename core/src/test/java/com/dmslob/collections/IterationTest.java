@@ -85,6 +85,26 @@ public class IterationTest {
         }).isInstanceOf(UnsupportedOperationException.class);
     }
 
+    /**
+     * Explanation:
+     * The modification counter check is only performed in next (and in remove).
+     * In this case, after deleting an element, hasNext returns false,
+     * so no concurrent modification exception occurs.
+     */
+    @Test
+    public void should_not_get_ConcurrentModificationException_when_remove_penultimate_item() {
+        // given
+        List<Integer> integers = new ArrayList<>(List.of(1, 2, 3, 4, 5));
+        // when
+        for (Integer i : integers) {
+            if (i == 4) {
+                integers.remove(i);
+            }
+        }
+        // then
+        assertThat(List.of(1, 2, 3, 5)).isEqualTo(integers);
+    }
+
     @Test
     public void should_not_get_ConcurrentModificationException() {
         // given
