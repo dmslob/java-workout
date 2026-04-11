@@ -6,42 +6,51 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class SingletonTest {
 
-    static class LazySingleton {
-        // Private constructor to prevent external instantiation
-        private LazySingleton() {
-            // Optional: Add initialization logic here
-        }
-        // Static inner class to hold the Singleton instance
-        private static class SingletonHolder {
-            // The instance is created only when SingletonHolder is initialized
-            private static final LazySingleton INSTANCE = new LazySingleton();
+    static class BillPughSingleton {
+        private BillPughSingleton() {
+            System.out.println("BillPughSingleton is initialized");
         }
 
-        public static LazySingleton getInstance() {
+        private static class SingletonHolder {
+            static {
+                System.out.println("SingletonHolder is initialized");
+            }
+
+            private static final BillPughSingleton INSTANCE = new BillPughSingleton();
+        }
+
+        public static BillPughSingleton getInstance() {
+            System.out.println("getInstance is called");
             return SingletonHolder.INSTANCE;
         }
 
         public String greeting() {
-            return "Hello from the Lazy Singleton";
+            return "Hello from the Singleton";
         }
     }
 
     @Test
-    public void should_test_singleton() {
+    public void should_test_BillPughSingleton() {
         // given
-        var instance1 = LazySingleton.getInstance();
+        var instance1 = BillPughSingleton.getInstance();
         // when
         var greeting = instance1.greeting();
         // then
-        assertThat(greeting).isEqualTo("Hello from the Lazy Singleton");
+        assertThat(greeting).isEqualTo("Hello from the Singleton");
         // given
-        var instance2 = LazySingleton.getInstance();
+        var instance2 = BillPughSingleton.getInstance();
         // then
         assertThat(instance1 == instance2).isTrue();
     }
 
+    /**
+     * Turns out to not work reliably because of issues with optimizing compilers
+     * and shared memory multiprocessors.
+     */
     static class DoubleCheckedSingleton {
-        private DoubleCheckedSingleton() {}
+        private DoubleCheckedSingleton() {
+        }
+
         private static volatile DoubleCheckedSingleton instance;
 
         public static DoubleCheckedSingleton getInstance() {
