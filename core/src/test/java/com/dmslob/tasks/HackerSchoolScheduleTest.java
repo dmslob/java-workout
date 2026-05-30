@@ -32,7 +32,7 @@ public class HackerSchoolScheduleTest {
      * @param schedule binary matrix represented as an array of strings
      * @return minimum total hours spent at school
      */
-    public static int minimizeTime(int n, int m, int k, String[] schedule) {
+    public int minimizeTime(int n, int m, int k, String[] schedule) {
         // dp[j] stores the minimum time spent given we have skipped exactly j lectures
         // Initialize with a large value to represent "infinity", divided by 2 to prevent overflow
         int[] dp = new int[k + 1];
