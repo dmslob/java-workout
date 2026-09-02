@@ -1,7 +1,6 @@
 package com.dmslob.collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.withinPercentage;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
