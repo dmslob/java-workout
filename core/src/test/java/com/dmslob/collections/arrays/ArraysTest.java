@@ -210,4 +210,55 @@ public class ArraysTest {
         // then
         assertThat(i).isEqualTo(expectedIndex);
     }
+
+    @Test
+    public void should_compare_arrays_using_equals() {
+        // given
+        // primitives
+        int[] p1 = {1, 2, 3};
+        int[] p2 = {1, 2, 3};
+        // then & when
+        assertThat(Arrays.equals(p1, p2)).isTrue();
+
+        // object arrays
+        String[] o1 = {"a", "b"};
+        String[] o2 = {"a", "b"};
+        // then & when
+        assertThat(Arrays.equals(o1, o2)).isTrue();
+
+        // nested arrays: different inner array instances with same contents
+        String[][] n1 = {{"a"}};
+        String[][] n2 = {{"a"}};
+        // then & when
+        assertThat(Arrays.equals(n1, n2)).isFalse();
+
+        // nested primitive arrays
+        int[][] nn1 = {{1}};
+        int[][] nn2 = {{1}};
+        // then & when
+        assertThat(Arrays.equals(nn1, nn2)).isFalse();
+
+        // same inner array reference -> equals returns true
+        String[] inner = {"x"};
+        String[][] ref1 = {inner};
+        String[][] ref2 = {inner};
+        // then & when
+        assertThat(Arrays.equals(ref1, ref2)).isTrue();
+    }
+
+    @Test
+    public void should_compare_arrays_using_deepEquals() {
+        // given
+        // nested arrays: different inner array instances with same contents
+        String[][] n1 = {{"a"}};
+        String[][] n2 = {{"a"}};
+        // then & when
+        assertThat(Arrays.deepEquals(n1, n2)).isTrue();
+
+        // nested primitive arrays
+        int[][] nn1 = {{1}};
+        int[][] nn2 = {{1}};
+        // then & when
+        assertThat(Arrays.deepEquals(nn1, nn2)).isTrue();
+    }
 }
